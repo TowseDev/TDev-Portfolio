@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TDev Digital — Digital Systems Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --paper:      #EAE7DF;
+    --paper-2:    #E2DED4;
+    --panel-ink:  #14161B;
+    --ink:        #14161B;
+    --ink-soft:   #2C2F36;
+    --graphite:   #6A6C6E;
+    --graphite-2: #8E9092;
+    --rule:       rgba(20,22,27,0.16);
+    --rule-soft:  rgba(20,22,27,0.08);
+    --mark:       #1B43E8;   /* drafting / revision-pen blue */
+    --mark-deep:  #1633B8;
+    --paper-on-ink: #E4E0D6;
+    --rule-on-ink:  rgba(228,224,214,0.18);
+
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+    --sans: 'Inter', system-ui, sans-serif;
+    --display: 'Archivo', system-ui, sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* faint baseline grid behind everything */
+  .grid-bg {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image:
+      linear-gradient(var(--rule-soft) 1px, transparent 1px),
+      linear-gradient(90deg, var(--rule-soft) 1px, transparent 1px);
+    background-size: 100% 88px, 88px 100%;
+    opacity: 0.7;
+    mask-image: linear-gradient(180deg, rgba(0,0,0,0.5), rgba(0,0,0,1));
+  }
+
+  .wrap { position: relative; z-index: 1; }
+
+  /* drawing border — two vertical spines + monospace edge labels */
+  .spine {
+    position: fixed;
+    top: 0; bottom: 0;
+    width: 1px;
+    background: var(--rule);
+    z-index: 2;
+    pointer-events: none;
+  }
+  .spine.left  { left: 52px; }
+  .spine.right { right: 52px; }
+
+  .edge-label {
+    position: fixed;
+    z-index: 3;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    color: var(--graphite-2);
+    text-transform: uppercase;
+    writing-mode: vertical-rl;
+    pointer-events: none;
+  }
+  .edge-label.l { left: 21px; top: 50%; transform: translateY(-50%) rotate(180deg); }
+  .edge-label.r { right: 21px; top: 50%; transform: translateY(-50%); }
+
+  .container {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 92px;
+  }
+
+  /* ─── NAV ─── */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: rgba(234,231,223,0.82);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--rule);
+  }
+  .nav {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 92px;
+    height: 62px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .logo {
+    display: flex; align-items: baseline; gap: 9px;
+    text-decoration: none; color: var(--ink);
+  }
+  .logo-mark {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 17px;
+    letter-spacing: -0.02em;
+  }
+  .logo-tag {
+    font-family: var(--mono);
+    font-size: 9.5px;
+    letter-spacing: 0.16em;
+    color: var(--graphite-2);
+    text-transform: uppercase;
+  }
+  .nav-links {
+    display: flex; align-items: center; gap: 30px; list-style: none;
+  }
+  .nav-links a {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--graphite);
+    text-decoration: none;
+    transition: color 0.2s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute; left: 0; right: 0; bottom: -6px;
+    height: 1px; background: var(--mark);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.25s ease;
+  }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-links a:hover::after { transform: scaleX(1); }
+
+  .nav-cta {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--paper);
+    background: var(--ink);
+    text-decoration: none;
+    padding: 8px 16px;
+    transition: background 0.2s;
+  }
+  .nav-cta:hover { background: var(--mark); }
+
+  /* ─── section chrome ─── */
+  .sec { padding: 0 0 0; }
+  .sec-pad { padding-top: 92px; padding-bottom: 92px; }
+
+  .sec-rule {
+    display: flex; align-items: center; gap: 16px;
+    border-top: 1px solid var(--rule);
+    padding-top: 14px;
+    margin-bottom: 56px;
+  }
+  .sec-rule .tick {
+    width: 1px; height: 9px; background: var(--ink);
+    margin-top: -23px;
+  }
+  .sec-code {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--mark);
+    margin-top: -23px;
+  }
+  .sec-name {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--graphite);
+    margin-top: -23px;
+  }
+  .sec-meta {
+    margin-left: auto;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--graphite-2);
+    text-transform: uppercase;
+    margin-top: -23px;
+  }
+
+  /* ─── HERO ─── */
+  .hero { padding-top: 64px; padding-bottom: 70px; }
+
+  .hero-meta {
+    display: flex; align-items: center; gap: 18px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--graphite);
+    margin-bottom: 40px;
+  }
+  .hero-meta .dot { width: 5px; height: 5px; background: var(--mark); border-radius: 50%; }
+  .hero-meta .sep { flex: 1; height: 1px; background: var(--rule); }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.18fr 0.82fr;
+    gap: 56px;
+    align-items: start;
+  }
+
+  .hero-headline {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: clamp(40px, 6.2vw, 84px);
+    line-height: 0.98;
+    letter-spacing: -0.03em;
+    font-stretch: expanded;
+  }
+  .hero-headline .line { display: block; overflow: hidden; }
+  .hero-headline .line > span { display: inline-block; }
+
+  /* the marked-up revision */
+  .struck {
+    position: relative;
+    color: var(--graphite-2);
+    font-weight: 700;
+    margin-right: 0.12em;
+  }
+  .struck::after {
+    content: '';
+    position: absolute; left: -2%; right: -2%; top: 52%;
+    height: 4px;
+    background: var(--mark);
+    transform: scaleX(0); transform-origin: left;
+    border-radius: 2px;
+  }
+  .struck.drawn::after { animation: strike 0.5s ease 1.5s forwards; }
+  @keyframes strike { to { transform: scaleX(1); } }
+
+  .corrected {
+    color: var(--mark);
+    position: relative;
+    display: inline-block;
+    opacity: 0;
+  }
+  .corrected.drawn { animation: pop 0.45s cubic-bezier(.2,.9,.3,1.3) 1.95s forwards; }
+  @keyframes pop {
+    from { opacity: 0; transform: translateY(0.18em) rotate(-1.5deg); }
+    to   { opacity: 1; transform: translateY(0) rotate(-1.2deg); }
+  }
+  .corrected::before {
+    content: '↑ rev.A';
+    position: absolute;
+    top: -1.15em; right: 0;
+    font-family: var(--mono);
+    font-size: 0.16em;
+    letter-spacing: 0.1em;
+    color: var(--mark);
+    font-weight: 500;
+    opacity: 0;
+  }
+  .corrected.drawn::before { animation: fadeIn 0.4s ease 2.3s forwards; }
+  @keyframes fadeIn { to { opacity: 0.9; } }
+
+  .hero-body {
+    margin-top: 30px;
+    max-width: 440px;
+    font-size: 16.5px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+  }
+  .hero-body strong { font-weight: 600; color: var(--ink); }
+
+  .hero-actions {
+    margin-top: 36px;
+    display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  }
+  .btn {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 13px 22px;
+    display: inline-flex; align-items: center; gap: 9px;
+    transition: all 0.2s;
+    border: 1px solid var(--ink);
+  }
+  .btn-solid { background: var(--ink); color: var(--paper); }
+  .btn-solid:hover { background: var(--mark); border-color: var(--mark); }
+  .btn-line { background: transparent; color: var(--ink); }
+  .btn-line:hover { background: var(--ink); color: var(--paper); }
+  .btn svg { transition: transform 0.2s; }
+  .btn:hover svg { transform: translateX(3px); }
+
+  /* hero right: schematic + title block */
+  .hero-aside { display: flex; flex-direction: column; gap: 18px; }
+
+  .schematic {
+    border: 1px solid var(--rule);
+    background: rgba(255,255,255,0.18);
+    padding: 18px;
+    position: relative;
+  }
+  .schematic-top {
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: var(--mono);
+    font-size: 9.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--graphite-2);
+    margin-bottom: 6px;
+  }
+  .schematic svg { width: 100%; display: block; }
+
+  /* title block (drawing corner block) */
+  .title-block {
+    border: 1px solid var(--ink);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    font-family: var(--mono);
+  }
+  .tb-cell {
+    padding: 9px 11px;
+    border-right: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .tb-cell:nth-child(2n) { border-right: none; }
+  .tb-cell:nth-last-child(-n+2) { border-bottom: none; }
+  .tb-cell.full { grid-column: 1 / -1; border-right: none; }
+  .tb-k {
+    font-size: 8.5px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--graphite-2); margin-bottom: 3px;
+  }
+  .tb-v { font-size: 12px; color: var(--ink); font-weight: 500; }
+  .tb-v.blue { color: var(--mark); }
+
+  /* ─── CAPABILITIES ─── */
+  .spec-row {
+    display: grid;
+    grid-template-columns: 72px 1fr 1.3fr 120px;
+    gap: 24px;
+    align-items: baseline;
+    padding: 28px 0;
+    border-bottom: 1px solid var(--rule);
+    position: relative;
+    transition: padding-left 0.3s ease;
+  }
+  .spec-row:first-child { border-top: 1px solid var(--rule); }
+  .spec-row::before {
+    content: '';
+    position: absolute; left: -16px; top: 0; bottom: 0;
+    width: 3px; background: var(--mark);
+    transform: scaleY(0); transform-origin: top;
+    transition: transform 0.3s ease;
+  }
+  .spec-row:hover { padding-left: 12px; }
+  .spec-row:hover::before { transform: scaleY(1); }
+
+  .spec-code { font-family: var(--mono); font-size: 12px; color: var(--mark); letter-spacing: 0.1em; }
+  .spec-name {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: clamp(22px, 2.6vw, 32px);
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+  }
+  .spec-desc { font-size: 14.5px; color: var(--ink-soft); line-height: 1.55; }
+  .spec-stack {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.04em;
+    color: var(--graphite);
+    text-transform: uppercase;
+    text-align: right;
+    line-height: 1.8;
+  }
+
+  /* ─── WORK ─── */
+  .work-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+  }
+  .plate {
+    border: 1px solid var(--rule);
+    background: rgba(255,255,255,0.16);
+    text-decoration: none;
+    color: var(--ink);
+    display: flex; flex-direction: column;
+    transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+    position: relative;
+  }
+  .plate.span2 { grid-column: 1 / -1; }
+  .plate:hover {
+    border-color: var(--ink);
+    transform: translateY(-3px);
+    box-shadow: 0 18px 40px rgba(20,22,27,0.1);
+  }
+
+  .plate-canvas {
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid var(--rule);
+    background:
+      linear-gradient(var(--rule-soft) 1px, transparent 1px),
+      linear-gradient(90deg, var(--rule-soft) 1px, transparent 1px);
+    background-size: 28px 28px, 28px 28px;
+  }
+  .plate-canvas svg { width: 100%; height: 100%; display: block; }
+  .plate.span2 .plate-canvas { height: 300px; }
+  .plate-canvas.tall { height: 230px; }
+
+  .plate-index {
+    position: absolute;
+    top: 14px; left: 16px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--graphite);
+  }
+  .plate-sector {
+    position: absolute;
+    top: 14px; right: 16px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--mark);
+    border: 1px solid var(--mark);
+    padding: 2px 7px;
+  }
+
+  .plate-foot {
+    padding: 22px;
+    display: flex; justify-content: space-between; align-items: flex-end; gap: 20px;
+  }
+  .plate-name {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: clamp(20px, 2.2vw, 27px);
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    margin-bottom: 8px;
+  }
+  .plate-desc { font-size: 13.5px; color: var(--ink-soft); max-width: 440px; line-height: 1.5; }
+  .plate-view {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--graphite);
+    white-space: nowrap;
+    display: inline-flex; align-items: center; gap: 7px;
+    transition: color 0.2s, gap 0.2s;
+  }
+  .plate:hover .plate-view { color: var(--mark); gap: 11px; }
+
+  /* ─── INK PANEL (proof) ─── */
+  .ink-panel {
+    background: var(--panel-ink);
+    color: var(--paper-on-ink);
+    margin: 0 -92px;
+    padding: 92px 92px;
+  }
+  .ink-panel .sec-rule { border-top-color: var(--rule-on-ink); }
+  .ink-panel .sec-name { color: var(--graphite-2); }
+  .ink-panel .tick { background: var(--paper-on-ink); }
+
+  .ink-lead {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: clamp(26px, 3.2vw, 42px);
+    letter-spacing: -0.02em;
+    line-height: 1.12;
+    max-width: 760px;
+    margin-bottom: 64px;
+  }
+  .ink-lead .blue { color: #6E8BFF; }
+
+  .figures {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--rule-on-ink);
+  }
+  .figure {
+    padding: 32px 24px 32px 0;
+    border-right: 1px solid var(--rule-on-ink);
+    position: relative;
+  }
+  .figure:last-child { border-right: none; }
+  .fig-num {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: clamp(40px, 5vw, 60px);
+    letter-spacing: -0.03em;
+    line-height: 1;
+    font-stretch: expanded;
+  }
+  .fig-num .u { color: #6E8BFF; }
+  .fig-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--graphite-2);
+    margin-top: 14px;
+    max-width: 180px;
+    line-height: 1.5;
+  }
+
+  /* ─── PROCESS ─── */
+  .flow {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    border-top: 1px solid var(--rule);
+  }
+  .flow-step {
+    padding: 26px 22px 30px 0;
+    border-right: 1px solid var(--rule);
+    position: relative;
+  }
+  .flow-step:last-child { border-right: none; padding-right: 0; }
+  .flow-step::before {
+    content: '';
+    position: absolute; top: -1px; left: 0;
+    width: 0; height: 3px; background: var(--mark);
+    transition: width 0.5s ease;
+  }
+  .flow.run .flow-step::before { width: 100%; }
+  .flow-step:nth-child(2)::before { transition-delay: 0.1s; }
+  .flow-step:nth-child(3)::before { transition-delay: 0.2s; }
+  .flow-step:nth-child(4)::before { transition-delay: 0.3s; }
+  .flow-step:nth-child(5)::before { transition-delay: 0.4s; }
+
+  .flow-num { font-family: var(--mono); font-size: 11px; color: var(--mark); letter-spacing: 0.12em; }
+  .flow-title {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 19px;
+    letter-spacing: -0.01em;
+    margin: 14px 0 9px;
+  }
+  .flow-desc { font-size: 13px; color: var(--ink-soft); line-height: 1.55; }
+
+  /* ─── CTA ─── */
+  .cta { padding: 100px 0 110px; text-align: center; }
+  .cta-stamp {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--mark);
+    border: 1px solid var(--mark);
+    padding: 6px 14px;
+    margin-bottom: 30px;
+  }
+  .cta-title {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: clamp(34px, 5.4vw, 72px);
+    letter-spacing: -0.03em;
+    line-height: 0.98;
+    font-stretch: expanded;
+    max-width: 880px;
+    margin: 0 auto 26px;
+  }
+  .cta-title .blue { color: var(--mark); }
+  .cta-sub { font-size: 17px; color: var(--ink-soft); max-width: 460px; margin: 0 auto 40px; }
+  .cta .hero-actions { justify-content: center; }
+
+  /* ─── FOOTER ─── */
+  footer {
+    border-top: 1px solid var(--ink);
+    padding: 40px 0 36px;
+  }
+  .foot-top {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 32px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 22px;
+  }
+  .foot-brand .logo-mark { font-size: 19px; }
+  .foot-tag { font-size: 13.5px; color: var(--ink-soft); max-width: 280px; margin-top: 14px; line-height: 1.55; }
+  .foot-col h4 {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--graphite-2);
+    font-weight: 500;
+    margin-bottom: 16px;
+  }
+  .foot-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .foot-col a { font-size: 13.5px; color: var(--ink-soft); text-decoration: none; transition: color 0.2s; }
+  .foot-col a:hover { color: var(--mark); }
+  .foot-bot {
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--graphite-2);
+  }
+
+  /* ─── reveal ─── */
+  .reveal { opacity: 0; transform: translateY(26px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+
+  .ld { opacity: 0; transform: translateY(110%); }
+  .ld.go { animation: rise 0.8s cubic-bezier(.16,.84,.34,1) forwards; }
+  @keyframes rise { to { opacity: 1; transform: none; } }
+
+  /* schematic stroke draw */
+  .draw-path {
+    stroke-dasharray: 240;
+    stroke-dashoffset: 240;
+  }
+  .draw-path.go { animation: drawIn 1.1s ease 0.6s forwards; }
+  @keyframes drawIn { to { stroke-dashoffset: 0; } }
+  .node-pulse { transform-box: fill-box; transform-origin: center; }
+  .node-pulse.go { animation: nodeIn 0.4s ease forwards; opacity: 0; }
+  @keyframes nodeIn { to { opacity: 1; } }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 1040px) {
+    .spine, .edge-label { display: none; }
+    .container, .nav { padding-left: 40px; padding-right: 40px; }
+    .ink-panel { margin: 0 -40px; padding-left: 40px; padding-right: 40px; }
+  }
+  @media (max-width: 860px) {
+    .hero-grid { grid-template-columns: 1fr; gap: 36px; }
+    .hero-aside { max-width: 420px; }
+    .spec-row { grid-template-columns: 48px 1fr; gap: 8px 16px; }
+    .spec-row .spec-desc { grid-column: 2; }
+    .spec-row .spec-stack { grid-column: 2; text-align: left; }
+    .work-grid { grid-template-columns: 1fr; }
+    .figures { grid-template-columns: 1fr 1fr; }
+    .figure:nth-child(2) { border-right: none; }
+    .figure { border-bottom: 1px solid var(--rule-on-ink); padding-right: 0; }
+    .flow { grid-template-columns: 1fr 1fr; }
+    .flow-step { border-right: none; border-bottom: 1px solid var(--rule); padding-right: 0; }
+    .foot-top { grid-template-columns: 1fr 1fr; }
+    .plate-foot { flex-direction: column; align-items: flex-start; }
+  }
+  @media (max-width: 620px) {
+    .container, .nav { padding-left: 22px; padding-right: 22px; }
+    .ink-panel { margin: 0 -22px; padding-left: 22px; padding-right: 22px; }
+    .nav-links { display: none; }
+    .figures { grid-template-columns: 1fr; }
+    .figure { border-right: none; }
+    .flow { grid-template-columns: 1fr; }
+    .foot-top { grid-template-columns: 1fr; }
+    .foot-bot { flex-direction: column; gap: 12px; align-items: flex-start; }
+    .sec-pad { padding-top: 64px; padding-bottom: 64px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .reveal, .ld { opacity: 1; transform: none; }
+    .draw-path { stroke-dashoffset: 0; }
+    .corrected { opacity: 1; }
+    .struck::after { transform: scaleX(1); }
+    .node-pulse { opacity: 1; }
+    .flow .flow-step::before { width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+<div class="spine left"></div>
+<div class="spine right"></div>
+<div class="edge-label l">TDEV · DIGITAL SYSTEMS STUDIO</div>
+<div class="edge-label r">SHEET 01 / HOME · REV.A · 2026</div>
+
+<div class="wrap">
+
+<!-- NAV -->
+<header>
+  <nav class="nav">
+    <a href="#" class="logo">
+      <span class="logo-mark">TDev</span>
+      <span class="logo-tag">Digital Systems</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#work">Work</a></li>
+      <li><a href="#capabilities">Capabilities</a></li>
+      <li><a href="#process">Process</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a href="#contact" class="nav-cta">Start a build</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="container hero">
+  <div class="hero-meta">
+    <span class="dot"></span>
+    <span>Digital studio</span>
+    <span>·</span>
+    <span>London, UK</span>
+    <span class="sep"></span>
+    <span>Est. 2024</span>
+  </div>
+
+  <div class="hero-grid">
+    <div>
+      <h1 class="hero-headline">
+        <span class="line"><span class="ld" style="animation-delay:.05s">We build the</span></span>
+        <span class="line"><span class="ld" style="animation-delay:.18s"><span class="struck" id="struck">websites</span><span class="corrected" id="corrected">systems</span></span></span>
+        <span class="line"><span class="ld" style="animation-delay:.32s">businesses run on.</span></span>
+      </h1>
+
+      <p class="hero-body ld" style="animation-delay:.55s">
+        TDev designs and builds the digital infrastructure behind ambitious businesses — fast websites, custom web apps, and AI tools that replace real work. <strong>Engineered, not assembled.</strong>
+      </p>
+
+      <div class="hero-actions ld" style="animation-delay:.7s">
+        <a href="#work" class="btn btn-solid">
+          See the work
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 6.5h9M7 2.5l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="#contact" class="btn btn-line">Start a build</a>
+      </div>
+    </div>
+
+    <aside class="hero-aside ld" style="animation-delay:.45s">
+      <div class="schematic">
+        <div class="schematic-top">
+          <span>FIG.01 — SYSTEM</span>
+          <span>SCALE 1:1</span>
+        </div>
+        <svg viewBox="0 0 300 168" fill="none" id="schematic">
+          <!-- connectors -->
+          <path class="draw-path" d="M70 42 L150 84" stroke="#14161B" stroke-width="1.2"/>
+          <path class="draw-path" d="M230 42 L150 84" stroke="#14161B" stroke-width="1.2"/>
+          <path class="draw-path" d="M150 84 L70 126" stroke="#14161B" stroke-width="1.2"/>
+          <path class="draw-path" d="M150 84 L230 126" stroke="#14161B" stroke-width="1.2"/>
+          <!-- nodes -->
+          <g class="node-pulse" style="animation-delay:1.0s">
+            <rect x="40" y="28" width="60" height="28" fill="#EAE7DF" stroke="#14161B" stroke-width="1.2"/>
+            <text x="70" y="46" font-family="JetBrains Mono" font-size="10" fill="#14161B" text-anchor="middle">website</text>
+          </g>
+          <g class="node-pulse" style="animation-delay:1.15s">
+            <rect x="200" y="28" width="60" height="28" fill="#EAE7DF" stroke="#14161B" stroke-width="1.2"/>
+            <text x="230" y="46" font-family="JetBrains Mono" font-size="10" fill="#14161B" text-anchor="middle">web app</text>
+          </g>
+          <g class="node-pulse" style="animation-delay:1.3s">
+            <circle cx="150" cy="84" r="22" fill="#1B43E8" stroke="#1B43E8"/>
+            <text x="150" y="81" font-family="JetBrains Mono" font-size="9" fill="#EAE7DF" text-anchor="middle">CORE</text>
+            <text x="150" y="92" font-family="JetBrains Mono" font-size="9" fill="#EAE7DF" text-anchor="middle">SYS</text>
+          </g>
+          <g class="node-pulse" style="animation-delay:1.45s">
+            <rect x="40" y="112" width="60" height="28" fill="#EAE7DF" stroke="#14161B" stroke-width="1.2"/>
+            <text x="70" y="130" font-family="JetBrains Mono" font-size="10" fill="#14161B" text-anchor="middle">AI</text>
+          </g>
+          <g class="node-pulse" style="animation-delay:1.6s">
+            <rect x="200" y="112" width="60" height="28" fill="#EAE7DF" stroke="#14161B" stroke-width="1.2"/>
+            <text x="230" y="130" font-family="JetBrains Mono" font-size="10" fill="#14161B" text-anchor="middle">data</text>
+          </g>
+        </svg>
+      </div>
+
+      <div class="title-block">
+        <div class="tb-cell"><div class="tb-k">Studio</div><div class="tb-v">TDev Digital</div></div>
+        <div class="tb-cell"><div class="tb-k">Discipline</div><div class="tb-v">Web · App · AI</div></div>
+        <div class="tb-cell"><div class="tb-k">Stack</div><div class="tb-v">Custom build</div></div>
+        <div class="tb-cell"><div class="tb-k">Status</div><div class="tb-v blue">Open · 2 slots</div></div>
+        <div class="tb-cell full"><div class="tb-k">Brief</div><div class="tb-v">Systems for businesses that need more than a template.</div></div>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- CAPABILITIES -->
+<section class="container sec-pad" id="capabilities">
+  <div class="sec-rule reveal">
+    <span class="tick"></span>
+    <span class="sec-code">§01</span>
+    <span class="sec-name">Capabilities</span>
+    <span class="sec-meta">04 disciplines</span>
+  </div>
+
+  <div class="reveal">
+    <div class="spec-row">
+      <span class="spec-code">A1</span>
+      <span class="spec-name">Websites</span>
+      <span class="spec-desc">Fast, credible sites that explain the offer and convert. Built custom — no page builders, no bloat — and tuned for performance and search.</span>
+      <span class="spec-stack">WordPress<br>Custom themes<br>SEO</span>
+    </div>
+    <div class="spec-row">
+      <span class="spec-code">A2</span>
+      <span class="spec-name">Web apps</span>
+      <span class="spec-desc">Booking systems, client portals, dashboards and internal tools that take the manual work off your plate and run quietly.</span>
+      <span class="spec-stack">Next.js<br>TypeScript<br>Postgres</span>
+    </div>
+    <div class="spec-row">
+      <span class="spec-code">A3</span>
+      <span class="spec-name">AI systems</span>
+      <span class="spec-desc">Practical AI built into the product — summaries, copilots, automations — not novelty demos bolted on for show.</span>
+      <span class="spec-stack">LLM APIs<br>Pipelines<br>Eval</span>
+    </div>
+    <div class="spec-row">
+      <span class="spec-code">A4</span>
+      <span class="spec-name">Infrastructure</span>
+      <span class="spec-desc">The layer underneath: hosting, integrations, performance and maintainability. Set up once, runs for years.</span>
+      <span class="spec-stack">Hosting<br>CI / CD<br>Monitoring</span>
+    </div>
+  </div>
+</section>
+
+<!-- WORK -->
+<section class="container sec-pad" id="work">
+  <div class="sec-rule reveal">
+    <span class="tick"></span>
+    <span class="sec-code">§02</span>
+    <span class="sec-name">Selected work</span>
+    <span class="sec-meta">04 builds</span>
+  </div>
+
+  <div class="work-grid reveal">
+    <!-- Featured -->
+    <a href="#" class="plate span2">
+      <div class="plate-canvas">
+        <span class="plate-index">PLATE 01</span>
+        <span class="plate-sector">Infrastructure</span>
+        <svg viewBox="0 0 720 300" preserveAspectRatio="xMidYMid slice" fill="none">
+          <line x1="60" y1="60" x2="660" y2="60" stroke="rgba(20,22,27,0.2)" stroke-width="1"/>
+          <line x1="60" y1="60" x2="60" y2="240" stroke="rgba(20,22,27,0.2)" stroke-width="1"/>
+          <rect x="60" y="90" width="200" height="14" fill="#14161B"/>
+          <rect x="60" y="116" width="320" height="14" fill="rgba(20,22,27,0.35)"/>
+          <rect x="60" y="142" width="150" height="14" fill="rgba(20,22,27,0.2)"/>
+          <rect x="60" y="180" width="120" height="34" fill="#1B43E8"/>
+          <g stroke="rgba(20,22,27,0.25)" stroke-width="1">
+            <rect x="420" y="90" width="110" height="124"/>
+            <rect x="550" y="90" width="110" height="124"/>
+          </g>
+          <circle cx="475" cy="125" r="14" fill="#1B43E8"/>
+          <rect x="445" y="150" width="60" height="8" fill="rgba(20,22,27,0.25)"/>
+          <rect x="445" y="166" width="44" height="8" fill="rgba(20,22,27,0.15)"/>
+          <circle cx="605" cy="125" r="14" fill="rgba(20,22,27,0.3)"/>
+          <rect x="575" y="150" width="60" height="8" fill="rgba(20,22,27,0.25)"/>
+          <rect x="575" y="166" width="44" height="8" fill="rgba(20,22,27,0.15)"/>
+          <text x="60" y="270" font-family="JetBrains Mono" font-size="11" fill="rgba(20,22,27,0.4)">rail · energy · construction · forensic planning</text>
+        </svg>
+      </div>
+      <div class="plate-foot">
+        <div>
+          <div class="plate-name">Give2Gets Project Planning</div>
+          <div class="plate-desc">A professional website and full brand system for a UK infrastructure planning consultancy working across rail, energy and construction.</div>
+        </div>
+        <span class="plate-view">View case study →</span>
+      </div>
+    </a>
+
+    <!-- Two side by side -->
+    <a href="#" class="plate">
+      <div class="plate-canvas tall">
+        <span class="plate-index">PLATE 02</span>
+        <span class="plate-sector">E-commerce</span>
+        <svg viewBox="0 0 350 230" preserveAspectRatio="xMidYMid slice" fill="none">
+          <circle cx="175" cy="92" r="50" fill="none" stroke="#1B43E8" stroke-width="1.5"/>
+          <path d="M175 62 q-20 30 0 60 q20 -30 0 -60" stroke="#1B43E8" stroke-width="1.2" fill="none"/>
+          <path d="M145 92 q30 -20 60 0 q-30 20 -60 0" stroke="rgba(20,22,27,0.3)" stroke-width="1.2" fill="none"/>
+          <g stroke="rgba(20,22,27,0.25)" stroke-width="1">
+            <rect x="40" y="168" width="80" height="44"/>
+            <rect x="135" y="168" width="80" height="44"/>
+            <rect x="230" y="168" width="80" height="44"/>
+          </g>
+        </svg>
+      </div>
+      <div class="plate-foot">
+        <div>
+          <div class="plate-name">Alchemy Ferns</div>
+          <div class="plate-desc">A refined e-commerce store for a specialist fern nursery, built around calm, earthy visuals.</div>
+        </div>
+        <span class="plate-view">View →</span>
+      </div>
+    </a>
+
+    <a href="#" class="plate">
+      <div class="plate-canvas tall">
+        <span class="plate-index">PLATE 03</span>
+        <span class="plate-sector">Web App · AI</span>
+        <svg viewBox="0 0 350 230" preserveAspectRatio="xMidYMid slice" fill="none">
+          <rect x="50" y="40" width="250" height="20" fill="rgba(20,22,27,0.3)"/>
+          <rect x="50" y="74" width="180" height="12" fill="rgba(20,22,27,0.18)"/>
+          <g>
+            <rect x="50" y="108" width="115" height="80" fill="none" stroke="rgba(20,22,27,0.25)"/>
+            <rect x="62" y="124" width="60" height="10" fill="#1B43E8"/>
+            <rect x="62" y="142" width="80" height="8" fill="rgba(20,22,27,0.2)"/>
+            <rect x="62" y="158" width="70" height="8" fill="rgba(20,22,27,0.15)"/>
+            <rect x="185" y="108" width="115" height="80" fill="#1B43E8" opacity="0.08" stroke="#1B43E8"/>
+            <circle cx="243" cy="140" r="18" fill="#1B43E8"/>
+            <rect x="210" y="166" width="66" height="8" fill="rgba(20,22,27,0.2)"/>
+          </g>
+        </svg>
+      </div>
+      <div class="plate-foot">
+        <div>
+          <div class="plate-name">Engine Room Coach</div>
+          <div class="plate-desc">A coaching platform that lets coaches run group programmes without the 1:1 workload.</div>
+        </div>
+        <span class="plate-view">View →</span>
+      </div>
+    </a>
+
+    <!-- Construction full -->
+    <a href="#" class="plate span2">
+      <div class="plate-canvas" style="height:200px;">
+        <span class="plate-index">PLATE 04</span>
+        <span class="plate-sector">Construction</span>
+        <svg viewBox="0 0 720 200" preserveAspectRatio="xMidYMid slice" fill="none">
+          <g stroke="rgba(20,22,27,0.25)" stroke-width="1">
+            <path d="M80 160 L80 70 L160 50 L160 160"/>
+            <path d="M160 160 L160 60 L260 40 L260 160"/>
+            <path d="M260 160 L260 80 L340 70 L340 160"/>
+          </g>
+          <rect x="100" y="90" width="20" height="20" fill="rgba(20,22,27,0.15)"/>
+          <rect x="190" y="80" width="20" height="20" fill="#1B43E8"/>
+          <rect x="290" y="100" width="20" height="20" fill="rgba(20,22,27,0.15)"/>
+          <line x1="60" y1="160" x2="660" y2="160" stroke="#14161B" stroke-width="1.2"/>
+          <rect x="440" y="60" width="220" height="14" fill="#14161B"/>
+          <rect x="440" y="86" width="160" height="10" fill="rgba(20,22,27,0.25)"/>
+          <rect x="440" y="110" width="110" height="30" fill="#1B43E8"/>
+        </svg>
+      </div>
+      <div class="plate-foot">
+        <div>
+          <div class="plate-name">Virtue Developments</div>
+          <div class="plate-desc">A bold construction website built around strong photography, direct navigation and project-led credibility.</div>
+        </div>
+        <span class="plate-view">View case study →</span>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- INK PANEL / PROOF -->
+<div class="container">
+  <section class="ink-panel" id="why">
+    <div class="sec-rule reveal">
+      <span class="tick"></span>
+      <span class="sec-code" style="color:#6E8BFF;">§03</span>
+      <span class="sec-name">Why a studio, not a freelancer</span>
+    </div>
+    <p class="ink-lead reveal">
+      Most small businesses don't need another pretty homepage. They need the <span class="blue">systems underneath</span> to actually work — and someone who'll still be here when something breaks.
+    </p>
+    <div class="figures reveal">
+      <div class="figure">
+        <div class="fig-num">40<span class="u">+</span></div>
+        <div class="fig-label">Projects shipped across web, app and AI</div>
+      </div>
+      <div class="figure">
+        <div class="fig-num">100<span class="u">%</span></div>
+        <div class="fig-label">Custom-built — no page builders, no templates</div>
+      </div>
+      <div class="figure">
+        <div class="fig-num">1<span class="u">:1</span></div>
+        <div class="fig-label">You work directly with the person building it</div>
+      </div>
+      <div class="figure">
+        <div class="fig-num">0</div>
+        <div class="fig-label">Ghosting after launch — support is part of the build</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- PROCESS -->
+<section class="container sec-pad" id="process">
+  <div class="sec-rule reveal">
+    <span class="tick"></span>
+    <span class="sec-code">§04</span>
+    <span class="sec-name">How a build runs</span>
+    <span class="sec-meta">05 phases</span>
+  </div>
+
+  <div class="flow reveal" id="flow">
+    <div class="flow-step">
+      <div class="flow-num">01</div>
+      <div class="flow-title">Clarify</div>
+      <div class="flow-desc">Define the problem, scope and what success looks like — before a pixel is drawn.</div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-num">02</div>
+      <div class="flow-title">Design</div>
+      <div class="flow-desc">Structure the interface, flows and technical approach. High-fidelity, shared early.</div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-num">03</div>
+      <div class="flow-title">Build</div>
+      <div class="flow-desc">Develop in focused sprints with weekly check-ins and a live staging environment.</div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-num">04</div>
+      <div class="flow-title">Launch</div>
+      <div class="flow-desc">Deploy, test and hand over with clear documentation. No surprises on go-live.</div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-num">05</div>
+      <div class="flow-title">Improve</div>
+      <div class="flow-desc">Refine, automate and extend as the business grows. Most clients stay on.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="container cta" id="contact">
+  <span class="cta-stamp reveal">For Approval</span>
+  <h2 class="cta-title reveal">Have a project that needs<br>more than a <span class="blue">template?</span></h2>
+  <p class="cta-sub reveal">Send the brief, the problem, or just the rough idea. I'll turn it into a clear digital build.</p>
+  <div class="hero-actions reveal">
+    <a href="mailto:hello@tdevdigital.com" class="btn btn-solid">
+      Start a build
+      <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 6.5h9M7 2.5l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+    <a href="#work" class="btn btn-line">See the work first</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="container">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <a href="#" class="logo"><span class="logo-mark">TDev</span><span class="logo-tag">Digital Systems</span></a>
+      <p class="foot-tag">A London studio building websites, web apps and AI systems for businesses that need more than a template.</p>
+    </div>
+    <div class="foot-col">
+      <h4>Studio</h4>
+      <ul>
+        <li><a href="#work">Work</a></li>
+        <li><a href="#capabilities">Capabilities</a></li>
+        <li><a href="#process">Process</a></li>
+      </ul>
+    </div>
+    <div class="foot-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="#">Websites</a></li>
+        <li><a href="#">Web apps</a></li>
+        <li><a href="#">AI systems</a></li>
+        <li><a href="#">Infrastructure</a></li>
+      </ul>
+    </div>
+    <div class="foot-col">
+      <h4>Connect</h4>
+      <ul>
+        <li><a href="mailto:hello@tdevdigital.com">hello@tdevdigital.com</a></li>
+        <li><a href="#">LinkedIn</a></li>
+        <li><a href="#">GitHub</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-bot">
+    <span>© 2026 TDev Digital — All rights reserved</span>
+    <span>Drawn &amp; built in London</span>
+  </div>
+</footer>
+
+</div>
+
+<script>
+  // load sequence
+  window.addEventListener('load', () => {
+    document.querySelectorAll('.ld').forEach(el => el.classList.add('go'));
+    document.querySelectorAll('#schematic .draw-path, #schematic .node-pulse').forEach(el => el.classList.add('go'));
+    document.getElementById('struck').classList.add('drawn');
+    document.getElementById('corrected').classList.add('drawn');
+  });
+
+  // scroll reveal
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        if (e.target.id === 'flow') e.target.classList.add('run');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
