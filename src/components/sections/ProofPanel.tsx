@@ -1,42 +1,108 @@
+"use client";
+
 import { proofFigures } from "@/data/proof";
-import { Reveal } from "@/components/ui/Reveal";
-import { SectionRule } from "@/components/ui/SectionRule";
+import { proofTestimonials } from "@/data/proofTestimonials";
+import { ProofStatFigure } from "@/components/sections/ProofStatFigure";
+import { useInViewOnce } from "@/hooks/useInViewOnce";
+import { useEffect, useRef, useState } from "react";
+
+type MotionState = "pending" | "reduce" | "animate";
 
 export function ProofPanel() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const inView = useInViewOnce(sectionRef, { threshold: 0.12 });
+  const [motionState, setMotionState] = useState<MotionState>("pending");
+
+  useEffect(() => {
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    setMotionState(reduced ? "reduce" : "animate");
+  }, []);
+
+  const shouldAnimate = motionState === "animate";
+  const reducedMotion = motionState === "reduce";
+  const active = motionState !== "animate" || inView;
+
   return (
-    <div className="sheet-container">
-      <section className="ink-panel" id="why">
-        <Reveal>
-          <SectionRule
-            code="§03"
-            name="Proof of work"
-            codeColor="#6E8BFF"
-          />
-        </Reveal>
+    <section
+      ref={sectionRef}
+      className={`proof-band${shouldAnimate ? " proof-band--animate" : ""}${
+        active ? " proof-band--active" : ""
+      }`}
+      id="why"
+    >
+      <div className="proof-band__grid-bg" aria-hidden="true" />
+      <div className="proof-band__inner sheet-container">
+        <div className="proof-band__rule sec-rule">
+          <span className="proof-band__rule-draw" aria-hidden="true" />
+          <div className="proof-band__rule-labels">
+            <span className="tick" />
+            <span className="sec-code" style={{ color: "#6E8BFF" }}>
+              §03
+            </span>
+            <span className="sec-name">Proof of work</span>
+            <span className="sec-meta">Operating record</span>
+          </div>
+        </div>
 
-        <Reveal>
-          <p className="ink-lead">
-            Most small businesses do not need another pretty homepage. They need
-            a website and <span className="blue">digital systems</span> that
-            actually work — and a team they can trust when something needs
-            fixing, improving or scaling.
-          </p>
-        </Reveal>
+        <div className="proof-band__main">
+          <h2 className="proof-band__heading">
+            <span className="proof-band__heading-line">
+              A better website is only part of the fix.
+            </span>
+          </h2>
+          <div className="proof-band__copy">
+            <p className="proof-band__support proof-band__support--1">
+              Most small businesses need the systems underneath to work too —
+              enquiries, forms, payments, analytics, hosting, updates and the tools
+              that keep everything moving.
+            </p>
+            <p className="proof-band__support proof-band__support--2">
+              We stay close to the practical details: how the site is managed, how
+              leads come in, how performance is tracked, and what happens after
+              launch.
+            </p>
+          </div>
+        </div>
 
-        <Reveal>
-          <div className="figures">
-            {proofFigures.map((figure) => (
-              <div key={figure.label} className="figure">
-                <div className="fig-num">
-                  {figure.value}
-                  {figure.unit ? <span className="u">{figure.unit}</span> : null}
-                </div>
-                <div className="fig-label">{figure.label}</div>
-              </div>
+        <div className="proof-band__figures">
+          {proofFigures.map((figure, index) => (
+            <ProofStatFigure
+              key={figure.id}
+              figure={figure}
+              active={active}
+              reducedMotion={reducedMotion}
+              index={index}
+            />
+          ))}
+        </div>
+
+        <div className="proof-band__comments">
+          <div className="proof-band__comments-head">
+            <span className="proof-band__comments-label">Client comments</span>
+            <span className="proof-band__comments-meta">03 notes</span>
+          </div>
+          <div className="proof-band__comments-grid">
+            {proofTestimonials.map((testimonial, index) => (
+              <figure
+                key={testimonial.id}
+                className="proof-band__comment"
+                style={{ "--comment-index": index } as React.CSSProperties}
+              >
+                <blockquote className="proof-band__comment-quote">
+                  <p>&ldquo;{testimonial.quote}&rdquo;</p>
+                </blockquote>
+                <figcaption className="proof-band__comment-foot">
+                  <cite className="proof-band__comment-name">{testimonial.name}</cite>
+                  <span className="proof-band__comment-business">
+                    {testimonial.business}
+                  </span>
+                  <span className="proof-band__comment-type">{testimonial.type}</span>
+                </figcaption>
+              </figure>
             ))}
           </div>
-        </Reveal>
-      </section>
-    </div>
+        </div>
+      </div>
+    </section>
   );
 }

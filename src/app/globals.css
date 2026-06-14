@@ -786,24 +786,415 @@
   gap: 11px;
 }
 
-/* ─── INK PANEL (proof) ─── */
+/* ─── PROOF BAND ─── */
+.proof-band {
+  width: 100%;
+  background: var(--panel-ink);
+  color: var(--paper-on-ink);
+  padding: 110px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.proof-band::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(228, 224, 214, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(228, 224, 214, 0.045) 1px, transparent 1px);
+  background-size: 88px 88px, 88px 88px;
+}
+
+.proof-band__grid-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.35;
+  background-image:
+    linear-gradient(rgba(228, 224, 214, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(228, 224, 214, 0.03) 1px, transparent 1px);
+  background-size: 44px 44px, 44px 44px;
+}
+
+.proof-band__inner {
+  position: relative;
+  z-index: 1;
+}
+
+.proof-band--animate:not(.proof-band--active) .proof-band__inner {
+  opacity: 0;
+  transform: translateY(18px);
+}
+
+.proof-band--animate.proof-band--active .proof-band__inner {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 700ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.proof-band__rule.sec-rule {
+  position: relative;
+  border-top: none;
+  margin-bottom: 40px;
+  padding-top: 0;
+}
+
+.proof-band__rule-draw {
+  display: block;
+  height: 1px;
+  width: 100%;
+  background: var(--rule-on-ink);
+  transform-origin: left center;
+}
+
+.proof-band--animate:not(.proof-band--active) .proof-band__rule-draw {
+  transform: scaleX(0);
+}
+
+.proof-band--animate.proof-band--active .proof-band__rule-draw {
+  transform: scaleX(1);
+  transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1) 120ms;
+}
+
+.proof-band__rule-labels {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-top: 11px;
+}
+
+.proof-band--animate:not(.proof-band--active) .proof-band__rule-labels {
+  opacity: 0;
+}
+
+.proof-band--animate.proof-band--active .proof-band__rule-labels {
+  opacity: 1;
+  transition: opacity 500ms ease 520ms;
+}
+
+.proof-band__rule .sec-name,
+.proof-band__rule .sec-meta {
+  color: rgba(228, 224, 214, 0.55);
+}
+
+.proof-band__rule .tick {
+  flex-shrink: 0;
+  width: 1px;
+  height: 10px;
+  background: var(--paper-on-ink);
+  align-self: flex-start;
+  margin-top: -11px;
+}
+
+.proof-band__main {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: 32px 56px;
+  align-items: start;
+  padding-bottom: 44px;
+  margin-bottom: 0;
+  border-bottom: 1px solid transparent;
+}
+
+.proof-band--active .proof-band__main {
+  border-bottom-color: var(--rule-on-ink);
+  transition: border-color 600ms ease 900ms;
+}
+
+.proof-band__heading {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: clamp(26px, 3.2vw, 42px);
+  letter-spacing: -0.02em;
+  line-height: 1.12;
+  color: var(--paper-on-ink);
+  margin: 0;
+}
+
+.proof-band__heading-line {
+  display: block;
+}
+
+.proof-band--animate:not(.proof-band--active) .proof-band__heading-line {
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+.proof-band--animate.proof-band--active .proof-band__heading-line {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 650ms cubic-bezier(0.22, 1, 0.36, 1) 680ms,
+    transform 650ms cubic-bezier(0.22, 1, 0.36, 1) 680ms;
+}
+
+.proof-band__copy {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.proof-band__support {
+  font-size: 15px;
+  line-height: 1.62;
+  color: rgba(228, 224, 214, 0.68);
+  margin: 0;
+}
+
+.proof-band__support--1 {
+  max-width: 420px;
+}
+
+.proof-band__support--2 {
+  max-width: 400px;
+}
+
+.proof-band--animate:not(.proof-band--active) .proof-band__support {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+.proof-band--animate.proof-band--active .proof-band__support--1 {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 600ms ease 860ms,
+    transform 600ms ease 860ms;
+}
+
+.proof-band--animate.proof-band--active .proof-band__support--2 {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 600ms ease 980ms,
+    transform 600ms ease 980ms;
+}
+
+.proof-band__figures {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+}
+
+.proof-band__figure {
+  padding: 28px 28px 28px 0;
+  border-right: none;
+  position: relative;
+}
+
+.proof-band__figure:last-child {
+  padding-right: 0;
+}
+
+.proof-band__figure-divider {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 1px;
+  height: 100%;
+  background: var(--rule-on-ink);
+  transform-origin: top center;
+  pointer-events: none;
+}
+
+.proof-band__figure:last-child .proof-band__figure-divider {
+  display: none;
+}
+
+.proof-band--animate:not(.proof-band--active) .proof-band__figure-divider {
+  transform: scaleY(0);
+  opacity: 0;
+}
+
+.proof-band--animate.proof-band--active .proof-band__figure-divider {
+  transform: scaleY(1);
+  opacity: 1;
+  transition:
+    transform 650ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 650ms ease;
+  transition-delay: calc(1080ms + (var(--figure-index, 0) * 70ms));
+}
+
+.proof-band__fig-num {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(44px, 5.2vw, 64px);
+  letter-spacing: -0.03em;
+  line-height: 1;
+  font-stretch: expanded;
+  color: var(--paper-on-ink);
+}
+
+.proof-band__fig-num .u {
+  color: #6e8bff;
+}
+
+.proof-band--animate:not(.proof-band--active) .proof-band__fig-num:not(.proof-band__fig-num--fade) {
+  opacity: 0;
+}
+
+.proof-band--animate.proof-band--active .proof-band__fig-num:not(.proof-band__fig-num--fade) {
+  opacity: 1;
+  transition: opacity 400ms ease 1180ms;
+}
+
+.proof-band--animate:not(.proof-band--active) .proof-band__fig-num--fade {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+.proof-band--animate.proof-band--active .proof-band__fig-num--fade {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 650ms ease 1280ms,
+    transform 650ms cubic-bezier(0.22, 1, 0.36, 1) 1280ms;
+}
+
+.proof-band__fig-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(228, 224, 214, 0.52);
+  margin-top: 12px;
+  max-width: 220px;
+  line-height: 1.55;
+}
+
+.proof-band--animate:not(.proof-band--active) .proof-band__fig-label {
+  opacity: 0;
+}
+
+.proof-band--animate.proof-band--active .proof-band__fig-label {
+  opacity: 1;
+  transition: opacity 500ms ease 1380ms;
+}
+
+.proof-band__comments {
+  margin-top: 0;
+  padding-top: 36px;
+  border-top: 1px solid var(--rule-on-ink);
+}
+
+.proof-band__comments-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.proof-band__comments-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(228, 224, 214, 0.62);
+}
+
+.proof-band__comments-meta {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(228, 224, 214, 0.42);
+}
+
+.proof-band__comments-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.proof-band__comment {
+  margin: 0;
+  padding: 22px 22px 20px;
+  border: 1px solid rgba(228, 224, 214, 0.1);
+  background: rgba(255, 255, 255, 0.02);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  transition: border-color 0.25s ease;
+}
+
+.proof-band__comment:hover {
+  border-color: rgba(228, 224, 214, 0.2);
+}
+
+.proof-band__comment-quote {
+  margin: 0;
+}
+
+.proof-band__comment-quote p {
+  font-size: 15px;
+  line-height: 1.58;
+  color: rgba(228, 224, 214, 0.88);
+  margin: 0;
+}
+
+.proof-band__comment-foot {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-style: normal;
+}
+
+.proof-band__comment-name {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  color: var(--paper-on-ink);
+  font-style: normal;
+}
+
+.proof-band__comment-business,
+.proof-band__comment-type {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(228, 224, 214, 0.48);
+  line-height: 1.45;
+}
+
+.proof-band__comment-type {
+  color: #6e8bff;
+  opacity: 0.85;
+}
+
+.proof-band--animate:not(.proof-band--active) .proof-band__comments-head {
+  opacity: 0;
+}
+
+.proof-band--animate.proof-band--active .proof-band__comments-head {
+  opacity: 1;
+  transition: opacity 500ms ease 1520ms;
+}
+
+.proof-band--animate:not(.proof-band--active) .proof-band__comment {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+.proof-band--animate.proof-band--active .proof-band__comment {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 550ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 550ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: calc(1620ms + (var(--comment-index, 0) * 100ms));
+}
+
+/* legacy ink-panel aliases — kept for reference HTML parity if needed */
 .ink-panel {
   background: var(--panel-ink);
   color: var(--paper-on-ink);
-  margin: 0 -92px;
-  padding: 58px 92px;
-}
-
-.ink-panel .sec-rule {
-  border-top-color: var(--rule-on-ink);
-}
-
-.ink-panel .sec-name {
-  color: var(--graphite-2);
-}
-
-.ink-panel .tick {
-  background: var(--paper-on-ink);
 }
 
 .ink-lead {
@@ -1115,10 +1506,12 @@
     padding-right: 40px;
   }
 
-  .ink-panel {
-    margin: 0 -40px;
-    padding-left: 40px;
-    padding-right: 40px;
+  .proof-band {
+    padding: 80px 0;
+  }
+
+  .proof-band__main {
+    gap: 24px 40px;
   }
 }
 
@@ -1148,6 +1541,54 @@
 
   .work-grid {
     grid-template-columns: 1fr;
+  }
+
+  .proof-band {
+    padding: 72px 0;
+  }
+
+  .proof-band__main {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding-bottom: 36px;
+  }
+
+  .proof-band__support--1,
+  .proof-band__support--2 {
+    max-width: none;
+  }
+
+  .proof-band__figures {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .proof-band__figure:nth-child(2) .proof-band__figure-divider {
+    display: none;
+  }
+
+  .proof-band__figure {
+    padding-right: 0;
+  }
+
+  .proof-band__figure:nth-child(1),
+  .proof-band__figure:nth-child(2) {
+    padding-bottom: 24px;
+    margin-bottom: 0;
+    border-bottom: 1px solid var(--rule-on-ink);
+  }
+
+  .proof-band__figure:nth-child(1) .proof-band__figure-divider,
+  .proof-band__figure:nth-child(3) .proof-band__figure-divider {
+    display: none;
+  }
+
+  .proof-band__comments-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .proof-band__comments {
+    padding-top: 32px;
   }
 
   .figures {
@@ -1190,10 +1631,48 @@
     padding-right: 22px;
   }
 
-  .ink-panel {
-    margin: 0 -22px;
-    padding-left: 22px;
-    padding-right: 22px;
+  .proof-band {
+    padding: 56px 0;
+  }
+
+  .proof-band__rule.sec-rule {
+    margin-bottom: 28px;
+  }
+
+  .proof-band__figures {
+    grid-template-columns: 1fr;
+  }
+
+  .proof-band__figure {
+    padding: 22px 0;
+  }
+
+  .proof-band__figure:not(:last-child) {
+    border-bottom: 1px solid var(--rule-on-ink);
+  }
+
+  .proof-band__figure:last-child {
+    padding-bottom: 0;
+  }
+
+  .proof-band__figure .proof-band__figure-divider {
+    display: none;
+  }
+
+  .proof-band__fig-label {
+    max-width: none;
+  }
+
+  .proof-band__comments {
+    padding-top: 28px;
+  }
+
+  .proof-band__comments-head {
+    margin-bottom: 20px;
+  }
+
+  .proof-band__comment {
+    padding: 20px 18px 18px;
   }
 
   .nav-links {
@@ -1255,6 +1734,20 @@
   *::after {
     animation: none !important;
     transition: none !important;
+  }
+
+  .proof-band--animate:not(.proof-band--active) .proof-band__inner,
+  .proof-band--animate:not(.proof-band--active) .proof-band__rule-draw,
+  .proof-band--animate:not(.proof-band--active) .proof-band__rule-labels,
+  .proof-band--animate:not(.proof-band--active) .proof-band__heading-line,
+  .proof-band--animate:not(.proof-band--active) .proof-band__support,
+  .proof-band--animate:not(.proof-band--active) .proof-band__figure-divider,
+  .proof-band--animate:not(.proof-band--active) .proof-band__fig-num,
+  .proof-band--animate:not(.proof-band--active) .proof-band__fig-label,
+  .proof-band--animate:not(.proof-band--active) .proof-band__comments-head,
+  .proof-band--animate:not(.proof-band--active) .proof-band__comment {
+    opacity: 1;
+    transform: none;
   }
 
   .reveal,
