@@ -1,100 +1,51 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Button } from "@/components/ui/Button";
-import { Container } from "@/components/ui/Container";
-import { SectionHeader } from "@/components/ui/SectionHeader";
+import { SectionRule } from "@/components/ui/SectionRule";
 
 export const metadata: Metadata = {
   title: "Contact",
-  description: "Get in touch with TDev Digital to discuss your next project.",
+  description:
+    "Book a call or send a brief to TDev Digital about your website, web app or marketing system.",
 };
 
 export default function ContactPage() {
   return (
-    <section className="py-24 lg:py-32">
-      <Container>
-        <div className="grid gap-16 lg:grid-cols-2 lg:items-start">
-          <SectionHeader
-            eyebrow="Contact"
-            title="Tell us about your project"
-            description="Share a few details and we'll get back to you with a clear next step. No lengthy forms, no auto-replies — just a direct conversation."
-          />
+    <section className="sheet-container policy-page">
+      <SectionRule code="§05" name="Contact" meta="Start a build" />
 
-          <div className="rounded-2xl border border-border bg-surface p-6 sm:p-8">
-            <form className="space-y-6">
-              <div>
-                <label
-                  htmlFor="name"
-                  className="mb-2 block text-sm font-medium text-foreground"
-                >
-                  Name
-                </label>
-                <input
-                  id="name"
-                  name="name"
-                  type="text"
-                  placeholder="Your name"
-                  className="w-full rounded-xl border border-border bg-background px-4 py-3 text-sm text-foreground outline-none transition-colors placeholder:text-muted/70 focus:border-white/20"
-                />
-              </div>
+      <header className="policy-header">
+        <h1 className="policy-title">Book a call or send a brief</h1>
+        <p className="policy-updated">Direct contact</p>
+      </header>
 
-              <div>
-                <label
-                  htmlFor="email"
-                  className="mb-2 block text-sm font-medium text-foreground"
-                >
-                  Email
-                </label>
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  placeholder="you@company.com"
-                  className="w-full rounded-xl border border-border bg-background px-4 py-3 text-sm text-foreground outline-none transition-colors placeholder:text-muted/70 focus:border-white/20"
-                />
-              </div>
+      <article className="policy-content">
+        <p>
+          Tell us about the website, web app, marketing system or technical
+          problem you need help with.
+        </p>
 
-              <div>
-                <label
-                  htmlFor="message"
-                  className="mb-2 block text-sm font-medium text-foreground"
-                >
-                  Project details
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  rows={5}
-                  placeholder="What are you looking to build?"
-                  className="w-full resize-y rounded-xl border border-border bg-background px-4 py-3 text-sm text-foreground outline-none transition-colors placeholder:text-muted/70 focus:border-white/20"
-                />
-              </div>
+        <h2>Primary contact</h2>
+        <p>
+          <a href="mailto:contact@towseddev.com">contact@towseddev.com</a>
+        </p>
 
-              <Button type="submit">Send message</Button>
-              <p className="text-xs text-muted">
-                Form submission wiring can be added when you&apos;re ready to
-                connect email or a CRM.
-              </p>
-            </form>
-          </div>
-        </div>
+        <p>
+          We typically respond within 1–2 business days. If you do not have a
+          booking link yet, email is the fastest way to start.
+        </p>
 
-        <div className="mt-16 grid gap-6 border-t border-border pt-16 sm:grid-cols-3">
-          {[
-            { label: "Email", value: "hello@tdevdigital.com" },
-            { label: "Response time", value: "Within 1–2 business days" },
-            { label: "Best for", value: "New builds, redesigns & retainers" },
-          ].map((item) => (
-            <div key={item.label}>
-              <p className="font-mono text-xs uppercase tracking-[0.15em] text-muted">
-                {item.label}
-              </p>
-              <p className="mt-2 text-sm text-foreground sm:text-base">
-                {item.value}
-              </p>
-            </div>
-          ))}
-        </div>
-      </Container>
+        <p>
+          <Button href="mailto:contact@towseddev.com" variant="solid" showArrow>
+            Email the brief
+          </Button>
+        </p>
+
+        <p>
+          Prefer to review our work first?{" "}
+          <Link href="/work">View selected projects</Link>.
+        </p>
+      </article>
     </section>
   );
 }

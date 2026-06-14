@@ -108,10 +108,10 @@ export function Hero() {
           </p>
 
           <div className="hero-actions ld" style={{ animationDelay: "0.7s" }}>
-            <Button href="#contact" variant="solid" showArrow>
+            <Button href="/contact" variant="solid" showArrow>
               Book a call
             </Button>
-            <Button href="#work" variant="line">
+            <Button href="/work" variant="line">
               View work
             </Button>
           </div>

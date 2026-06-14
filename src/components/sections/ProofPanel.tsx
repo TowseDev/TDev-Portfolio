@@ -52,15 +52,11 @@ export function ProofPanel() {
           </h2>
           <div className="proof-band__copy">
             <p className="proof-band__support proof-band__support--1">
-              Most small businesses need the systems underneath to work too —
+              Most small businesses need the systems underneath to work too.
               enquiries, forms, payments, analytics, hosting, updates and the tools
               that keep everything moving.
             </p>
-            <p className="proof-band__support proof-band__support--2">
-              We stay close to the practical details: how the site is managed, how
-              leads come in, how performance is tracked, and what happens after
-              launch.
-            </p>
+          
           </div>
         </div>
 

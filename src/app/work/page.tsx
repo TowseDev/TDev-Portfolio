@@ -6,7 +6,8 @@ import { projects } from "@/data/projects";
 
 export const metadata: Metadata = {
   title: "Work",
-  description: "Selected projects from TDev Digital across web, software, and commerce.",
+  description:
+    "Selected builds across websites, web apps, ecommerce, digital marketing and technical support.",
 };
 
 export default function WorkPage() {
@@ -15,8 +16,8 @@ export default function WorkPage() {
       <Container>
         <SectionHeader
           eyebrow="Work"
-          title="Projects built for performance and clarity"
-          description="A portfolio of websites, platforms, and digital products — each scoped with intent and delivered with care."
+          title="Selected builds"
+          description="Selected builds across websites, web apps, ecommerce, digital marketing and technical support."
         />
 
         <div className="mt-14 grid gap-6 md:grid-cols-2">

@@ -1,22 +1,25 @@
 import Link from "next/link";
 
 const studioLinks = [
-  { href: "#work", label: "Work" },
-  { href: "#capabilities", label: "Capabilities" },
-  { href: "#process", label: "Process" },
+  { href: "/work", label: "Work" },
+  { href: "/services", label: "Capabilities" },
+  { href: "/process", label: "Process" },
 ];
 
 const serviceLinks = [
-  { href: "#capabilities", label: "Website Development" },
-  { href: "#capabilities", label: "Custom Web Apps" },
-  { href: "#capabilities", label: "Digital Marketing" },
-  { href: "#capabilities", label: "Infrastructure & Support" },
+  { href: "/services/website-development", label: "Website Development" },
+  { href: "/services/custom-web-apps", label: "Custom Web Apps" },
+  { href: "/services/digital-marketing", label: "Digital Marketing" },
+  {
+    href: "/services/infrastructure-support",
+    label: "Infrastructure & Support",
+  },
 ];
 
 const connectLinks = [
-  { href: "mailto:hello@tdevdigital.com", label: "Email us" },
-  { href: "https://linkedin.com", label: "LinkedIn" },
-  { href: "https://github.com", label: "GitHub" },
+  { href: "mailto:contact@towseddev.com", label: "Email us" },
+  { href: "#", label: "LinkedIn" },
+  { href: "/privacy-policy", label: "Privacy Policy" },
 ];
 
 export function Footer() {

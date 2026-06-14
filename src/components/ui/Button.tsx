@@ -40,6 +40,15 @@ function buttonClassName(variant: ButtonVariant, className = "") {
   return `btn btn-${variant} ${className}`.trim();
 }
 
+function isExternalHref(href: string) {
+  return (
+    href.startsWith("mailto:") ||
+    href.startsWith("http://") ||
+    href.startsWith("https://") ||
+    href.startsWith("tel:")
+  );
+}
+
 export function Button({
   variant = "solid",
   href,
@@ -56,8 +65,18 @@ export function Button({
   );
 
   if (href) {
+    const classes = buttonClassName(variant, className);
+
+    if (isExternalHref(href)) {
+      return (
+        <a href={href} className={classes}>
+          {content}
+        </a>
+      );
+    }
+
     return (
-      <Link href={href} className={buttonClassName(variant, className)}>
+      <Link href={href} className={classes}>
         {content}
       </Link>
     );

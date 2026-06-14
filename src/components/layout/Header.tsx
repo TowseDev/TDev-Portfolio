@@ -1,10 +1,10 @@
 import Link from "next/link";
 
 const navLinks = [
-  { href: "#work", label: "Work" },
-  { href: "#capabilities", label: "Capabilities" },
-  { href: "#process", label: "Process" },
-  { href: "#contact", label: "Contact" },
+  { href: "/work", label: "Work" },
+  { href: "/services", label: "Capabilities" },
+  { href: "/process", label: "Process" },
+  { href: "/contact", label: "Contact" },
 ];
 
 export function Header() {
@@ -24,7 +24,7 @@ export function Header() {
           ))}
         </ul>
 
-        <Link href="#contact" className="nav-cta">
+        <Link href="/contact" className="nav-cta">
           Book a call
         </Link>
       </nav>
