@@ -27,12 +27,12 @@ function ProjectMeta({
       </h3>
 
       <p className="mt-3 text-sm leading-relaxed text-muted">
-        {project.description}
+        {project.summary}
       </p>
 
       {showFull ? (
         <ul className="mt-5 flex flex-wrap gap-2">
-          {project.services.map((service) => (
+          {project.services?.map((service) => (
             <li
               key={service}
               className="border border-border px-2.5 py-1 text-[11px] text-muted"
@@ -44,7 +44,7 @@ function ProjectMeta({
       ) : null}
 
       <ul className="mt-4 flex flex-wrap gap-x-3 gap-y-1">
-        {project.stack.map((item) => (
+        {project.stack?.map((item) => (
           <li
             key={item}
             className="font-mono text-[10px] uppercase tracking-wider text-muted/70"
@@ -68,7 +68,7 @@ export function ProjectPreview({
         className="group grid border border-border transition-colors hover:border-white/15 lg:grid-cols-2"
       >
         <ProjectImage
-          src={project.image}
+          src={project.featuredImage ?? ""}
           alt={`${project.title} — ${project.category}`}
           className="aspect-[4/3] w-full lg:aspect-auto lg:min-h-[24rem]"
           sizes="(max-width: 1024px) 100vw, 50vw"
@@ -98,7 +98,7 @@ export function ProjectPreview({
         className="group block border border-border transition-colors hover:border-white/15"
       >
         <ProjectImage
-          src={project.image}
+          src={project.featuredImage ?? ""}
           alt={`${project.title} — ${project.category}`}
           className="aspect-[16/10] w-full"
           sizes="(max-width: 1024px) 100vw, 50vw"
@@ -120,7 +120,7 @@ export function ProjectPreview({
       className="group flex flex-col border border-border transition-colors hover:border-white/15"
     >
       <ProjectImage
-        src={project.image}
+        src={project.featuredImage ?? ""}
         alt={`${project.title} — ${project.category}`}
         className="aspect-[4/3] w-full"
         sizes="(max-width: 1024px) 100vw, 50vw"

@@ -26,7 +26,7 @@ export async function generateMetadata({
 
   return {
     title: project.title,
-    description: project.description,
+    description: project.summary,
   };
 }
 
@@ -56,13 +56,13 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
             {project.title}
           </h1>
           <p className="mt-6 text-lg leading-relaxed text-muted sm:text-xl">
-            {project.description}
+            {project.summary}
           </p>
         </div>
 
         <div className="mt-12">
           <ProjectImage
-            src={project.image}
+            src={project.featuredImage ?? ""}
             alt={`${project.title} — ${project.category}`}
             className="aspect-[16/9] w-full"
             sizes="100vw"
@@ -71,7 +71,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         </div>
 
         <div className="mt-12 flex flex-wrap gap-3">
-          {project.stack.map((item) => (
+          {(project.stack ?? []).map((item) => (
             <span
               key={item}
               className="border border-border px-4 py-1.5 font-mono text-xs text-muted"
@@ -88,7 +88,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                 Services
               </p>
               <ul className="mt-3 space-y-2">
-                {project.services.map((service) => (
+                {(project.services ?? []).map((service) => (
                   <li key={service} className="text-sm text-foreground">
                     {service}
                   </li>
@@ -100,7 +100,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                 Stack
               </p>
               <ul className="mt-3 space-y-2">
-                {project.stack.map((item) => (
+                {(project.stack ?? []).map((item) => (
                   <li key={item} className="text-sm text-foreground">
                     {item}
                   </li>
@@ -114,7 +114,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
               Overview
             </h2>
             <p className="mt-4 max-w-3xl text-base leading-relaxed text-muted sm:text-lg">
-              {project.description}
+              {project.summary}
             </p>
           </div>
         </div>

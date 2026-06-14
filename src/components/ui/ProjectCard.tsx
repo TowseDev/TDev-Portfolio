@@ -13,7 +13,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
       className="group flex flex-col border border-border transition-colors hover:border-white/15"
     >
       <ProjectImage
-        src={project.image}
+        src={project.featuredImage ?? ""}
         alt={`${project.title} — ${project.category}`}
         className="aspect-[16/10] w-full"
         sizes="(max-width: 768px) 100vw, 50vw"
@@ -31,11 +31,11 @@ export function ProjectCard({ project }: ProjectCardProps) {
         </h3>
 
         <p className="mt-4 flex-1 text-base leading-relaxed text-muted">
-          {project.description}
+          {project.summary}
         </p>
 
         <div className="mt-6 flex flex-wrap gap-2">
-          {project.stack.map((item) => (
+          {(project.stack ?? []).map((item) => (
             <span
               key={item}
               className="border border-border px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-muted"

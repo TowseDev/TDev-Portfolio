@@ -1,20 +1,33 @@
+// Temporary local data source. This structure is intentionally CMS-ready for a future Sanity migration.
+
 export type Project = {
-  slug: string;
+  id: string;
   title: string;
+  slug: string;
   category: string;
-  description: string;
-  services: string[];
-  stack: string[];
-  image: string;
-  featured: boolean;
+  summary: string;
+  featuredImage?: string;
+  galleryImages?: string[];
+  services?: string[];
+  stack?: string[];
+  sector?: string;
+  projectType?: string;
+  clientName?: string;
+  problem?: string;
+  whatWeBuilt?: string;
+  outcome?: string;
+  liveUrl?: string;
+  featured?: boolean;
+  displayOrder: number;
 };
 
 export const projects: Project[] = [
   {
+    id: "engine-room-coach",
     slug: "engine-room-coach",
     title: "Engine Room Coach",
     category: "SaaS / AI Platform",
-    description:
+    summary:
       "Coaching software concept for managing group programmes.",
     services: [
       "Product Strategy",
@@ -23,14 +36,16 @@ export const projects: Project[] = [
       "AI Systems",
     ],
     stack: ["Next.js", "TypeScript", "Tailwind", "OpenAI"],
-    image: "/projects/engineroomcoach-preview.png",
+    featuredImage: "/projects/engineroomcoach-preview.png",
     featured: true,
+    displayOrder: 1,
   },
   {
+    id: "give2gets-project-planning",
     slug: "give2gets-project-planning",
     title: "Give2Gets Project Planning",
     category: "Consultancy Website",
-    description:
+    summary:
       "Planning consultancy website for infrastructure, rail, energy and construction.",
     services: [
       "Web Design",
@@ -39,14 +54,16 @@ export const projects: Project[] = [
       "Custom HTML/CSS",
     ],
     stack: ["WordPress", "Kadence", "Custom CSS"],
-    image: "/projects/Give2gets-preview.png",
+    featuredImage: "/projects/Give2gets-preview.png",
     featured: true,
+    displayOrder: 2,
   },
   {
+    id: "alchemy-ferns",
     slug: "alchemy-ferns",
     title: "Alchemy Ferns",
     category: "Ecommerce Website",
-    description:
+    summary:
       "Calm ecommerce experience for a specialist fern nursery.",
     services: [
       "Ecommerce",
@@ -55,35 +72,42 @@ export const projects: Project[] = [
       "WordPress Development",
     ],
     stack: ["WordPress", "WooCommerce", "Stripe"],
-    image: "/projects/alchemyferns-preview.png",
+    featuredImage: "/projects/alchemyferns-preview.png",
     featured: true,
+    displayOrder: 3,
   },
   {
+    id: "virtue-developments",
     slug: "virtue-developments",
     title: "Virtue Developments",
     category: "Construction Website",
-    description:
+    summary:
       "Photography-led construction website with direct project credibility.",
     services: ["Web Design", "Branding", "WordPress Development"],
     stack: ["WordPress", "Elementor", "Custom CSS"],
-    image: "/projects/virtuedevelopments-preview.png",
+    featuredImage: "/projects/virtuedevelopments-preview.png",
     featured: true,
+    displayOrder: 4,
   },
   {
+    id: "stay-at-filey",
     slug: "stay-at-filey",
     title: "Stay at Filey",
     category: "Holiday Cottage Website",
-    description:
+    summary:
       "Property-led booking website for coastal holiday cottages.",
     services: ["Web Design", "Booking Journey", "Content Structure"],
     stack: ["Wix", "Custom Design"],
-    image: "/projects/stayatfiley-preview.png",
+    featuredImage: "/projects/stayatfiley-preview.png",
     featured: false,
+    displayOrder: 5,
   },
 ];
 
 export function getFeaturedProjects(): Project[] {
-  return projects.filter((project) => project.featured);
+  return projects
+    .filter((project) => project.featured)
+    .sort((a, b) => a.displayOrder - b.displayOrder);
 }
 
 export function getFeaturedProject(): Project | undefined {

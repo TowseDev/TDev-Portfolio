@@ -1,7 +1,7 @@
 "use client";
 
 import { proofFigures } from "@/data/proof";
-import { proofTestimonials } from "@/data/proofTestimonials";
+import { getApprovedTestimonials } from "@/data/testimonials";
 import { ProofStatFigure } from "@/components/sections/ProofStatFigure";
 import { useInViewOnce } from "@/hooks/useInViewOnce";
 import { useEffect, useRef, useState } from "react";
@@ -78,7 +78,7 @@ export function ProofPanel() {
             <span className="proof-band__comments-meta">03 notes</span>
           </div>
           <div className="proof-band__comments-grid">
-            {proofTestimonials.map((testimonial, index) => (
+            {getApprovedTestimonials().map((testimonial, index) => (
               <figure
                 key={testimonial.id}
                 className="proof-band__comment"
@@ -92,7 +92,9 @@ export function ProofPanel() {
                   <span className="proof-band__comment-business">
                     {testimonial.business}
                   </span>
-                  <span className="proof-band__comment-type">{testimonial.type}</span>
+                  <span className="proof-band__comment-type">
+                    {testimonial.projectType}
+                  </span>
                 </figcaption>
               </figure>
             ))}

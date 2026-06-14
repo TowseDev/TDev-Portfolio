@@ -1461,6 +1461,159 @@
   overflow-wrap: anywhere;
 }
 
+/* ─── BUILD ARCHIVE ─── */
+.build-archive-section {
+  padding-top: 48px;
+  padding-bottom: 96px;
+  border-top: 1px solid var(--rule);
+}
+
+.build-archive-intro {
+  max-width: 640px;
+  margin-bottom: 36px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+
+.build-archive-table {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.build-archive-head,
+.build-archive-row {
+  display: grid;
+  grid-template-columns:
+    44px
+    minmax(0, 1.15fr)
+    minmax(0, 0.85fr)
+    minmax(0, 0.75fr)
+    72px
+    minmax(0, 1.45fr);
+  gap: 16px 20px;
+  align-items: baseline;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.build-archive-head {
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.build-archive-head-num {
+  display: block;
+}
+
+.build-archive-head-cell {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--graphite-2);
+  line-height: 1.3;
+}
+
+.build-archive-row {
+  position: relative;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--rule);
+  transition: padding-left 0.25s ease;
+}
+
+.build-archive-marker {
+  position: absolute;
+  left: -14px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--mark);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.25s ease;
+}
+
+.build-archive-row:hover {
+  padding-left: 10px;
+}
+
+.build-archive-row:hover .build-archive-marker {
+  transform: scaleY(1);
+}
+
+.build-archive-num {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--mark);
+}
+
+.build-archive-cell {
+  min-width: 0;
+}
+
+.build-archive-field-label {
+  display: none;
+}
+
+.build-archive-project {
+  display: block;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(17px, 1.8vw, 20px);
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+
+.build-archive-link {
+  display: inline-block;
+  width: fit-content;
+  max-width: 100%;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  color: var(--mark);
+  white-space: nowrap;
+  transition: color 0.2s ease;
+}
+
+.build-archive-link:hover {
+  color: var(--mark-deep);
+}
+
+.build-archive-link--empty {
+  text-decoration: none;
+  color: var(--graphite-2);
+  cursor: default;
+  pointer-events: none;
+}
+
+.build-archive-field-value {
+  display: block;
+  overflow-wrap: anywhere;
+}
+
+.build-archive-field-value--technical {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--graphite);
+  line-height: 1.45;
+}
+
+.build-archive-field-value--scope {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+
 /* ─── CTA ─── */
 .cta {
   padding: 55px 0 48px;
@@ -1919,11 +2072,13 @@
   }
 
   .build-seq-marker,
+  .build-archive-marker,
   .spec-row::before {
     left: 0;
   }
 
   .build-seq-row:hover,
+  .build-archive-row:hover,
   .spec-row:hover {
     padding-left: 0;
   }
@@ -2060,6 +2215,39 @@
     padding: 22px 0;
   }
 
+  .build-archive-head {
+    display: none;
+  }
+
+  .build-archive-row {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    padding: 24px 0;
+  }
+
+  .build-archive-num {
+    margin-bottom: 2px;
+  }
+
+  .build-archive-field-label {
+    display: block;
+    margin-bottom: 4px;
+    font-family: var(--mono);
+    font-size: 9.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--graphite-2);
+  }
+
+  .build-archive-cell--project .build-archive-field-label {
+    display: none;
+  }
+
+  .build-archive-section {
+    padding-top: 36px;
+    padding-bottom: 64px;
+  }
+
   .build-seq-output {
     align-items: flex-start;
     text-align: left;
@@ -2138,7 +2326,8 @@
     border-right: none;
   }
 
-  .build-seq-row {
+  .build-seq-row,
+  .build-archive-row {
     padding: 20px 0;
   }
 
