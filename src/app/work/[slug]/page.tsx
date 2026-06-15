@@ -63,7 +63,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         <div className="mt-12">
           <ProjectImage
             src={project.featuredImage ?? ""}
-            alt={`${project.title} — ${project.category}`}
+            alt={`${project.title}, ${project.category}`}
             className="aspect-[16/9] w-full"
             sizes="100vw"
             priority

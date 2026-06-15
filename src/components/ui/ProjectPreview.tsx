@@ -69,7 +69,7 @@ export function ProjectPreview({
       >
         <ProjectImage
           src={project.featuredImage ?? ""}
-          alt={`${project.title} — ${project.category}`}
+          alt={`${project.title}, ${project.category}`}
           className="aspect-[4/3] w-full lg:aspect-auto lg:min-h-[24rem]"
           sizes="(max-width: 1024px) 100vw, 50vw"
         />
@@ -99,7 +99,7 @@ export function ProjectPreview({
       >
         <ProjectImage
           src={project.featuredImage ?? ""}
-          alt={`${project.title} — ${project.category}`}
+          alt={`${project.title}, ${project.category}`}
           className="aspect-[16/10] w-full"
           sizes="(max-width: 1024px) 100vw, 50vw"
         />
@@ -121,7 +121,7 @@ export function ProjectPreview({
     >
       <ProjectImage
         src={project.featuredImage ?? ""}
-        alt={`${project.title} — ${project.category}`}
+        alt={`${project.title}, ${project.category}`}
         className="aspect-[4/3] w-full"
         sizes="(max-width: 1024px) 100vw, 50vw"
       />

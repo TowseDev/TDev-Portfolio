@@ -33,7 +33,7 @@ function ArchiveLink({ item }: { item: BuildArchiveItem }) {
     );
   }
 
-  return <span className="build-archive-link build-archive-link--empty">—</span>;
+  return <span className="build-archive-link build-archive-link--empty">·</span>;
 }
 
 export function BuildArchive({ items }: BuildArchiveProps) {

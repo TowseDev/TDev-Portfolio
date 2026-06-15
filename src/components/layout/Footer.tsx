@@ -7,11 +7,11 @@ const studioLinks = [
 ];
 
 const serviceLinks = [
-  { href: "/services/website-development", label: "Website Development" },
-  { href: "/services/custom-web-apps", label: "Custom Web Apps" },
-  { href: "/services/digital-marketing", label: "Digital Marketing" },
+  { href: "/services#website-development", label: "Website Development" },
+  { href: "/services#custom-web-apps", label: "Custom Web Apps" },
+  { href: "/services#digital-marketing", label: "Digital Marketing" },
   {
-    href: "/services/infrastructure-support",
+    href: "/services#infrastructure-support",
     label: "Infrastructure & Support",
   },
 ];
@@ -72,7 +72,7 @@ export function Footer() {
       </div>
 
       <div className="foot-bot">
-        <span>© 2026 TDev Digital — All rights reserved</span>
+        <span>© 2026 TDev Digital. All rights reserved</span>
         <span>Designed and built in the UK</span>
       </div>
     </footer>

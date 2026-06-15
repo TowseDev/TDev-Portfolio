@@ -14,7 +14,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
     >
       <ProjectImage
         src={project.featuredImage ?? ""}
-        alt={`${project.title} — ${project.category}`}
+        alt={`${project.title}, ${project.category}`}
         className="aspect-[16/10] w-full"
         sizes="(max-width: 768px) 100vw, 50vw"
       />

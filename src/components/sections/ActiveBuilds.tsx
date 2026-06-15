@@ -77,7 +77,7 @@ function BuildModule({
       <div className="relative aspect-[16/10] w-full overflow-hidden bg-[#080a10]">
         <Image
           src={project.image}
-          alt={`${project.title} — ${project.type}`}
+          alt={`${project.title}, ${project.type}`}
           fill
           className="object-cover object-top transition-transform duration-500 group-hover:scale-[1.02]"
           sizes={

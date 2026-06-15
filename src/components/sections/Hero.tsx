@@ -120,7 +120,7 @@ export function Hero() {
         <aside className="hero-aside ld" style={{ animationDelay: "0.45s" }}>
           <div className="schematic">
             <div className="schematic-top">
-              <span>FIG.01 — SYSTEM</span>
+              <span>FIG.01: SYSTEM</span>
               <span>SCALE 1:1</span>
             </div>
             <HeroSchematic />

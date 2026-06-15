@@ -24,7 +24,7 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata = {
   title: {
-    default: "TDev Digital — Digital Systems Studio",
+    default: "TDev Digital | Digital Systems Studio",
     template: "%s | TDev Digital",
   },
   description:

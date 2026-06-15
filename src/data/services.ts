@@ -27,7 +27,7 @@ export const services: Service[] = [
     excerpt:
       "Custom web applications for bookings, operations, client portals and internal workflows.",
     description:
-      "When a brochure site is not enough, I build web apps around real business processes — scoped clearly, structured for growth and easy to maintain.",
+      "When a brochure site is not enough, I build web apps around real business processes, scoped clearly, structured for growth and easy to maintain.",
     deliverables: [
       "Client portals and dashboards",
       "Booking and enquiry flows",
@@ -41,7 +41,7 @@ export const services: Service[] = [
     excerpt:
       "Practical AI features integrated into products, not novelty demos bolted on for show.",
     description:
-      "I design and build AI-powered tools that support real tasks — content workflows, coaching systems, automation and decision support embedded where they add value.",
+      "I design and build AI-powered tools that support real tasks: content workflows, coaching systems, automation and decision support embedded where they add value.",
     deliverables: [
       "OpenAI and LLM integrations",
       "Workflow automation",
@@ -53,7 +53,7 @@ export const services: Service[] = [
     slug: "digital-infrastructure",
     title: "Digital Infrastructure",
     excerpt:
-      "The technical layer behind reliable launches — hosting, integrations, performance and maintainability.",
+      "The technical layer behind reliable launches: hosting, integrations, performance and maintainability.",
     description:
       "Strong digital products need solid foundations. I handle deployment, integrations, monitoring and the technical decisions that keep your site or app running smoothly over time.",
     deliverables: [

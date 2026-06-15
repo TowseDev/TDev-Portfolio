@@ -31,7 +31,7 @@ export const capabilities: Capability[] = [
     code: "A4",
     name: "Digital Infrastructure & Support",
     description:
-      "The technical layer behind a business online — payments, analytics, domains, hosting, forms, email setup, integrations and ongoing support.",
+      "The technical layer behind a business online: payments, analytics, domains, hosting, forms, email setup, integrations and ongoing support.",
     stack: ["Stripe", "Analytics", "Hosting"],
   },
 ];
