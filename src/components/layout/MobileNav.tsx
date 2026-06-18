@@ -2,27 +2,70 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useCallback, useEffect, useId, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useId,
+  useState,
+  type ReactNode,
+} from "react";
 
 type NavLink = {
   href: string;
   label: string;
 };
 
-type MobileNavProps = {
-  navLinks: NavLink[];
+type MobileNavContextValue = {
+  isOpen: boolean;
+  panelId: string;
+  toggle: () => void;
+  close: () => void;
 };
 
-export function MobileNav({ navLinks }: MobileNavProps) {
+const MobileNavContext = createContext<MobileNavContextValue | null>(null);
+
+function useMobileNav() {
+  const context = useContext(MobileNavContext);
+
+  if (!context) {
+    throw new Error("MobileNav components must be used within MobileNav");
+  }
+
+  return context;
+}
+
+type MobileNavProps = {
+  navLinks: NavLink[];
+  children: ReactNode;
+};
+
+export function MobileNav({ navLinks, children }: MobileNavProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [renderOverlay, setRenderOverlay] = useState(false);
+  const [overlayActive, setOverlayActive] = useState(false);
   const panelId = useId();
   const pathname = usePathname();
 
   const close = useCallback(() => setIsOpen(false), []);
+  const toggle = useCallback(() => setIsOpen((open) => !open), []);
 
   useEffect(() => {
     close();
   }, [pathname, close]);
+
+  useEffect(() => {
+    if (isOpen) {
+      setRenderOverlay(true);
+      const frame = requestAnimationFrame(() => setOverlayActive(true));
+      return () => cancelAnimationFrame(frame);
+    }
+
+    setOverlayActive(false);
+    const timer = window.setTimeout(() => setRenderOverlay(false), 220);
+    return () => window.clearTimeout(timer);
+  }, [isOpen]);
 
   useEffect(() => {
     if (!isOpen) {
@@ -53,16 +96,20 @@ export function MobileNav({ navLinks }: MobileNavProps) {
   }, [isOpen]);
 
   return (
-    <>
-      <button
-        type="button"
-        className="nav-menu-toggle"
-        aria-expanded={isOpen}
-        aria-controls={panelId}
-        onClick={() => setIsOpen((open) => !open)}
-      >
-        {isOpen ? "Close" : "Menu"}
-      </button>
+    <MobileNavContext.Provider
+      value={{ isOpen, panelId, toggle, close }}
+    >
+      {children}
+
+      {renderOverlay ? (
+        <button
+          type="button"
+          className={`mobile-nav-overlay${overlayActive ? " is-active" : ""}`}
+          aria-hidden="true"
+          tabIndex={-1}
+          onClick={close}
+        />
+      ) : null}
 
       {isOpen ? (
         <nav
@@ -92,6 +139,22 @@ export function MobileNav({ navLinks }: MobileNavProps) {
           </Link>
         </nav>
       ) : null}
-    </>
+    </MobileNavContext.Provider>
+  );
+}
+
+export function MobileNavToggle() {
+  const { isOpen, panelId, toggle } = useMobileNav();
+
+  return (
+    <button
+      type="button"
+      className="nav-menu-toggle"
+      aria-expanded={isOpen}
+      aria-controls={panelId}
+      onClick={toggle}
+    >
+      {isOpen ? "Close" : "Menu"}
+    </button>
   );
 }

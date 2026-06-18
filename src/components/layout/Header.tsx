@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { MobileNav } from "@/components/layout/MobileNav";
+import { MobileNav, MobileNavToggle } from "@/components/layout/MobileNav";
 
 const navLinks = [
   { href: "/work", label: "Work" },
@@ -10,27 +10,29 @@ const navLinks = [
 
 export function Header() {
   return (
-    <header className="site-header">
-      <nav className="nav">
-        <Link href="/" className="logo">
-          <span className="logo-mark">TDev</span>
-          <span className="logo-tag">Digital Systems</span>
-        </Link>
+    <MobileNav navLinks={navLinks}>
+      <header className="site-header">
+        <nav className="nav">
+          <Link href="/" className="logo">
+            <span className="logo-mark">TDev</span>
+            <span className="logo-tag">Digital Systems</span>
+          </Link>
 
-        <ul className="nav-links">
-          {navLinks.map((link) => (
-            <li key={link.href}>
-              <Link href={link.href}>{link.label}</Link>
-            </li>
-          ))}
-        </ul>
+          <ul className="nav-links">
+            {navLinks.map((link) => (
+              <li key={link.href}>
+                <Link href={link.href}>{link.label}</Link>
+              </li>
+            ))}
+          </ul>
 
-        <Link href="/contact" className="nav-cta">
-          Book a call
-        </Link>
+          <Link href="/contact" className="nav-cta">
+            Book a call
+          </Link>
 
-        <MobileNav navLinks={navLinks} />
-      </nav>
-    </header>
+          <MobileNavToggle />
+        </nav>
+      </header>
+    </MobileNav>
   );
 }
