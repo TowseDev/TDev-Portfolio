@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { MobileNav } from "@/components/layout/MobileNav";
 
 const navLinks = [
   { href: "/work", label: "Work" },
@@ -27,6 +28,8 @@ export function Header() {
         <Link href="/contact" className="nav-cta">
           Book a call
         </Link>
+
+        <MobileNav navLinks={navLinks} />
       </nav>
     </header>
   );
