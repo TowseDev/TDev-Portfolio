@@ -42,30 +42,16 @@ type MobileNavProps = {
 };
 
 export function MobileNav({ navLinks, children }: MobileNavProps) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [renderOverlay, setRenderOverlay] = useState(false);
-  const [overlayActive, setOverlayActive] = useState(false);
+  const [openPath, setOpenPath] = useState<string | null>(null);
   const panelId = useId();
   const pathname = usePathname();
+  const isOpen = openPath === pathname;
 
-  const close = useCallback(() => setIsOpen(false), []);
-  const toggle = useCallback(() => setIsOpen((open) => !open), []);
-
-  useEffect(() => {
-    close();
-  }, [pathname, close]);
-
-  useEffect(() => {
-    if (isOpen) {
-      setRenderOverlay(true);
-      const frame = requestAnimationFrame(() => setOverlayActive(true));
-      return () => cancelAnimationFrame(frame);
-    }
-
-    setOverlayActive(false);
-    const timer = window.setTimeout(() => setRenderOverlay(false), 220);
-    return () => window.clearTimeout(timer);
-  }, [isOpen]);
+  const close = useCallback(() => setOpenPath(null), []);
+  const toggle = useCallback(
+    () => setOpenPath((current) => (current === pathname ? null : pathname)),
+    [pathname],
+  );
 
   useEffect(() => {
     if (!isOpen) {
@@ -101,10 +87,10 @@ export function MobileNav({ navLinks, children }: MobileNavProps) {
     >
       {children}
 
-      {renderOverlay ? (
+      {isOpen ? (
         <button
           type="button"
-          className={`mobile-nav-overlay${overlayActive ? " is-active" : ""}`}
+          className="mobile-nav-overlay is-active"
           aria-hidden="true"
           tabIndex={-1}
           onClick={close}

@@ -74,8 +74,6 @@ export default function PrivacyPolicyPage() {
         <p>We collect information when you:</p>
         <ul>
           <li>contact us by email</li>
-          <li>submit a form on our website</li>
-          <li>book a call or request a project discussion</li>
           <li>communicate with us during a project</li>
           <li>use our website, where analytics or cookies are enabled</li>
         </ul>

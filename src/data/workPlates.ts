@@ -48,7 +48,7 @@ export const workPlates: WorkPlateData[] = [
   {
     index: "PLATE 05",
     category: "Holiday Cottage Website",
-    title: "Stay at Filey",
+    title: "Stay At Filey",
     description:
       "A property-led holiday cottage website focused on accommodation clarity, visual browsing and direct booking confidence.",
     image: "/projects/stayatfiley-preview.png",

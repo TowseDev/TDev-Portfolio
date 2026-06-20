@@ -16,8 +16,8 @@ export const testimonials: Testimonial[] = [
   {
     id: "alchemy-ferns-mark-taylor",
     quote:
-      "Having engaged TDev to complete a full website makeover and upgrade, we found them to be honest and accurate in their appraisal. They completed a thorough and professional job, adding a number of bespoke elements where required. We found them knowledgeable, approachable and efficient throughout, and would happily recommend their services.",
-    name: "Mark",
+      "Having engaged Towse Digital Development to complete a full website makeover and upgrade, we found them to be honest and accurate in their appraisal. They completed a thorough and professional job, adding a number of bespoke elements where required. We found them knowledgeable, approachable and efficient throughout, and would happily recommend their services.",
+    name: "Mark Taylor",
     business: "Alchemy Ferns",
     projectType: "Ecommerce website",
     relatedProjectSlug: "alchemy-ferns",

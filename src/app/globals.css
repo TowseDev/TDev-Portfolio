@@ -3514,6 +3514,9 @@
   .sec-meta {
     flex: 1 1 100%;
     margin-left: 0;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    text-align: left;
   }
 
   .build-seq-marker,

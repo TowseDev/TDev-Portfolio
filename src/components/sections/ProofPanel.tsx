@@ -4,23 +4,16 @@ import { proofFigures } from "@/data/proof";
 import { getApprovedTestimonials } from "@/data/testimonials";
 import { ProofStatFigure } from "@/components/sections/ProofStatFigure";
 import { useInViewOnce } from "@/hooks/useInViewOnce";
-import { useEffect, useRef, useState } from "react";
-
-type MotionState = "pending" | "reduce" | "animate";
+import { useRef } from "react";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 export function ProofPanel() {
   const sectionRef = useRef<HTMLElement>(null);
   const inView = useInViewOnce(sectionRef, { threshold: 0.12 });
-  const [motionState, setMotionState] = useState<MotionState>("pending");
+  const reducedMotion = usePrefersReducedMotion();
 
-  useEffect(() => {
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    setMotionState(reduced ? "reduce" : "animate");
-  }, []);
-
-  const shouldAnimate = motionState === "animate";
-  const reducedMotion = motionState === "reduce";
-  const active = motionState !== "animate" || inView;
+  const shouldAnimate = !reducedMotion;
+  const active = reducedMotion || inView;
 
   return (
     <section
@@ -52,7 +45,7 @@ export function ProofPanel() {
           </h2>
           <div className="proof-band__copy">
             <p className="proof-band__support proof-band__support--1">
-              Most small businesses need the systems underneath to work too.
+              Most small businesses need the systems underneath to work too:
               enquiries, forms, payments, analytics, hosting, updates and the tools
               that keep everything moving.
             </p>

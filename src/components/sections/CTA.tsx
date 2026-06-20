@@ -1,29 +1,23 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import { Button } from "@/components/ui/Button";
 import { useInViewOnce } from "@/hooks/useInViewOnce";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 const nextSteps = [
-  { num: "01", label: "Book Free Call" },
-  { num: "02", label: "Accept Project Propsosal" },
-  { num: "03", label: "Start Project" },
+  { num: "01", label: "Book a call" },
+  { num: "02", label: "Accept project proposal" },
+  { num: "03", label: "Start project" },
 ];
-
-type MotionState = "pending" | "reduce" | "animate";
 
 export function CTA() {
   const sectionRef = useRef<HTMLElement>(null);
   const inView = useInViewOnce(sectionRef, { threshold: 0.12 });
-  const [motionState, setMotionState] = useState<MotionState>("pending");
+  const reducedMotion = usePrefersReducedMotion();
 
-  useEffect(() => {
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    setMotionState(reduced ? "reduce" : "animate");
-  }, []);
-
-  const shouldAnimate = motionState === "animate";
-  const active = motionState !== "animate" || inView;
+  const shouldAnimate = !reducedMotion;
+  const active = reducedMotion || inView;
 
   return (
     <section

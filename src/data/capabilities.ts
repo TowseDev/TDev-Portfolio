@@ -31,7 +31,7 @@ export const capabilities: Capability[] = [
     code: "A5",
     name: "AI Search Visibility",
     description:
-      "Structured content, technical signals and authority-building work designed to help businesses appear clearly across AI-assisted search, including ChatGPT, Gemini, Claude and Perplexity.",
+      "Structured content, technical signals and trust-building work designed to help businesses become easier to understand and reference across AI-assisted search.",
     stack: ["GEO", "LLM Visibility", "Structured Content"],
   },
   {
