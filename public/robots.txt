@@ -1,0 +1,15 @@
+# Sitemap URL should match NEXT_PUBLIC_SITE_URL (default: https://www.tdevdigital.com)
+
+User-agent: *
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+Sitemap: https://www.tdevdigital.com/sitemap.xml

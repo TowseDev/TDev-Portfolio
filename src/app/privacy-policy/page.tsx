@@ -1,17 +1,25 @@
 import type { Metadata } from "next";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { SectionRule } from "@/components/ui/SectionRule";
+import { createPageMetadata } from "@/lib/metadata";
+import { breadcrumbSchema } from "@/lib/schema";
 
-export const metadata: Metadata = {
-  title: {
-    absolute: "TDev Digital · Privacy Notice",
-  },
+export const metadata: Metadata = createPageMetadata({
+  title: "Privacy Policy",
   description:
-    "How TDev Digital collects, uses and protects your personal information.",
-};
+    "Privacy policy for TDev Digital, explaining how personal information is collected, used and protected.",
+  path: "/privacy-policy",
+});
 
 export default function PrivacyPolicyPage() {
   return (
     <section className="sheet-container policy-page">
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: "Privacy Policy", path: "/privacy-policy" },
+        ])}
+      />
       <SectionRule
         code="§00"
         name="Privacy Policy"

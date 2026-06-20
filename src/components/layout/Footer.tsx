@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SITE_EMAIL } from "@/lib/site";
 
 const studioLinks = [
   { href: "/work", label: "Work" },
@@ -21,8 +22,8 @@ const serviceLinks = [
 ];
 
 const connectLinks = [
-  { href: "mailto:contact@towseddev.com", label: "Email us" },
-  { href: "#", label: "LinkedIn" },
+  { href: `mailto:${SITE_EMAIL}`, label: SITE_EMAIL },
+  { href: "/contact", label: "Contact" },
   { href: "/privacy-policy", label: "Privacy Policy" },
 ];
 
@@ -36,8 +37,9 @@ export function Footer() {
             <span className="logo-tag">Digital Systems</span>
           </Link>
           <p className="foot-tag">
-            A digital studio building websites, web apps and marketing systems
-            for businesses that need practical technical support.
+            TDev Digital is a UK digital studio helping small businesses build
+            credible websites, practical web apps, marketing systems and clearer
+            digital infrastructure.
           </p>
         </div>
 

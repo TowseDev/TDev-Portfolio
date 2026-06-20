@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Button } from "@/components/ui/Button";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { SectionRule } from "@/components/ui/SectionRule";
+import { createPageMetadata } from "@/lib/metadata";
+import { breadcrumbSchema } from "@/lib/schema";
 
 const EMAIL = "contact@towseddev.com";
 const MAILTO = `mailto:${EMAIL}?subject=Project%20enquiry%20for%20TDev%20Digital`;
@@ -63,15 +66,23 @@ const projectTypes = [
   },
 ];
 
-export const metadata: Metadata = {
+export const metadata: Metadata = createPageMetadata({
   title: "Contact",
   description:
-    "Book a call or send a brief to TDev Digital about your website, web app or marketing system.",
-};
+    "Contact TDev Digital to discuss a website, web app, marketing system, technical setup or AI search visibility project.",
+  path: "/contact",
+});
 
 export default function ContactPage() {
   return (
     <div className="contact-page">
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: "Contact", path: "/contact" },
+        ])}
+      />
+
       <section className="sheet-container contact-hero">
         <SectionRule code="§01" name="Contact" meta="Start a build" />
 
@@ -81,9 +92,12 @@ export default function ContactPage() {
         </header>
 
         <p className="contact-intro">
-          Tell us about the website, web app, marketing system or technical
-          problem you need help with. If the brief is rough, send it anyway. The
-          first step is working out what needs to be built, fixed or improved.
+          TDev Digital is a UK digital studio helping small businesses with
+          websites, custom web apps, marketing systems, digital infrastructure
+          and AI search visibility. Tell us about the project or technical
+          problem you need help with. If the brief is rough, send it anyway.
+          The first step is working out what needs to be built, fixed or
+          improved.
         </p>
 
         <div className="contact-action">

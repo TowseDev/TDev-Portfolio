@@ -1,13 +1,17 @@
 import type { Metadata } from "next";
 import { Button } from "@/components/ui/Button";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { SectionRule } from "@/components/ui/SectionRule";
 import { processSteps, projectControlSteps } from "@/data/process";
+import { createPageMetadata } from "@/lib/metadata";
+import { breadcrumbSchema } from "@/lib/schema";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = createPageMetadata({
   title: "Process",
   description:
-    "How TDev Digital moves from brief to launch: clarify, plan, build, launch and improve.",
-};
+    "A clear project process for planning, building, launching and improving websites, web apps and digital systems.",
+  path: "/process",
+});
 
 function ProcessChecklist({
   label,
@@ -31,6 +35,13 @@ function ProcessChecklist({
 export default function ProcessPage() {
   return (
     <div className="process-page">
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: "Process", path: "/process" },
+        ])}
+      />
+
       <section className="sheet-container process-hero">
         <SectionRule code="§01" name="Build sequence" meta="05 Phases" />
 

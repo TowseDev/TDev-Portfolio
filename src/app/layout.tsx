@@ -1,7 +1,11 @@
+import type { Metadata } from "next";
 import { Archivo, Inter, JetBrains_Mono } from "next/font/google";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { PageChrome } from "@/components/layout/PageChrome";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { globalSchemas } from "@/lib/schema";
+import { SITE_URL } from "@/lib/site";
 import "./globals.css";
 
 const archivo = Archivo({
@@ -22,13 +26,14 @@ const jetbrainsMono = JetBrains_Mono({
   weight: ["400", "500", "700"],
 });
 
-export const metadata = {
+export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "TDev Digital | Digital Systems Studio",
+    default: "TDev Digital | Websites, Web Apps & Digital Systems",
     template: "%s | TDev Digital",
   },
   description:
-    "TDev Digital is a digital systems studio building websites, web apps and marketing systems for businesses that need practical technical support.",
+    "TDev Digital builds websites, custom web apps and marketing systems for small businesses that need a clearer, more reliable online presence.",
 };
 
 export default function RootLayout({
@@ -42,6 +47,7 @@ export default function RootLayout({
       className={`${archivo.variable} ${inter.variable} ${jetbrainsMono.variable}`}
     >
       <body>
+        <JsonLd data={globalSchemas()} />
         <PageChrome />
         <div className="wrap">
           <Header />

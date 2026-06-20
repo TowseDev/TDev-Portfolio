@@ -1,19 +1,28 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { SectionRule } from "@/components/ui/SectionRule";
+import { aiSearchVisibilityFaqs } from "@/data/aiSearchVisibilityFaqs";
 import {
   getServiceHref,
   serviceIndexItems,
   serviceModules,
   workingMethodSteps,
 } from "@/data/servicesPageContent";
+import { createPageMetadata } from "@/lib/metadata";
+import {
+  breadcrumbSchema,
+  faqPageSchema,
+  serviceSchemas,
+} from "@/lib/schema";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = createPageMetadata({
   title: "Services",
   description:
-    "Website development, custom web apps, digital marketing systems and technical support from TDev Digital.",
-};
+    "Website development, custom web apps, digital marketing systems, AI search visibility and technical support for small businesses.",
+  path: "/services",
+});
 
 function ServiceList({
   label,
@@ -34,9 +43,36 @@ function ServiceList({
   );
 }
 
+function AiSearchVisibilityFaq() {
+  return (
+    <div className="services-module-block services-module-block--outcome services-faq">
+      <span className="services-module-label">Common questions</span>
+      <div className="services-faq-list">
+        {aiSearchVisibilityFaqs.map((faq) => (
+          <div key={faq.question} className="services-faq-item">
+            <h3 className="services-faq-question">{faq.question}</h3>
+            <p className="services-module-outcome">{faq.answer}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function ServicesPage() {
   return (
     <div className="services-page">
+      <JsonLd
+        data={[
+          breadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Services", path: "/services" },
+          ]),
+          ...serviceSchemas(),
+          faqPageSchema(aiSearchVisibilityFaqs),
+        ]}
+      />
+
       <section className="sheet-container services-hero">
         <SectionRule code="§01" name="Capabilities" meta="05 Services" />
 
@@ -103,6 +139,9 @@ export default function ServicesPage() {
                 <span className="services-module-label">Outcome</span>
                 <p className="services-module-outcome">{module.outcome}</p>
               </div>
+              {module.id === "ai-search-visibility" ? (
+                <AiSearchVisibilityFaq />
+              ) : null}
             </div>
           </article>
         ))}
