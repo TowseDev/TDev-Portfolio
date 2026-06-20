@@ -11,6 +11,10 @@ const serviceLinks = [
   { href: "/services#custom-web-apps", label: "Custom Web Apps" },
   { href: "/services#digital-marketing", label: "Digital Marketing" },
   {
+    href: "/services#ai-search-visibility",
+    label: "AI Search Visibility",
+  },
+  {
     href: "/services#infrastructure-support",
     label: "Infrastructure & Support",
   },

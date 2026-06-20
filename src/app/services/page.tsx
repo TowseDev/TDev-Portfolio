@@ -38,7 +38,7 @@ export default function ServicesPage() {
   return (
     <div className="services-page">
       <section className="sheet-container services-hero">
-        <SectionRule code="§01" name="Capabilities" meta="04 Services" />
+        <SectionRule code="§01" name="Capabilities" meta="05 Services" />
 
         <header className="services-header">
           <h1 className="services-title">Services</h1>

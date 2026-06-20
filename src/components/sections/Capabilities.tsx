@@ -6,7 +6,7 @@ export function Capabilities() {
   return (
     <section className="sheet-container sec-pad" id="capabilities">
       <Reveal>
-        <SectionRule code="§01" name="Capabilities" meta="04 services" />
+        <SectionRule code="§01" name="Capabilities" meta="05 services" />
       </Reveal>
 
       <Reveal>

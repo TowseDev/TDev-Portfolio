@@ -42,7 +42,7 @@ export const serviceIndexItems: ServiceIndexItem[] = [
     slug: "digital-marketing",
     title: "Digital Marketing Systems",
     summary:
-      "SEO, analytics and campaign foundations that help businesses improve visibility and generate better enquiries.",
+      "SEO foundations, analytics, tracking and campaign pages that help businesses measure performance and generate better enquiries.",
   },
   {
     num: "04",
@@ -50,6 +50,13 @@ export const serviceIndexItems: ServiceIndexItem[] = [
     title: "Digital Infrastructure & Support",
     summary:
       "The technical setup behind a business online: domains, hosting, forms, payments, email and ongoing support.",
+  },
+  {
+    num: "05",
+    slug: "ai-search-visibility",
+    title: "AI Search Visibility",
+    summary:
+      "Help search engines and AI tools understand what the business does, where it operates and why it should be trusted.",
   },
 ];
 
@@ -113,25 +120,51 @@ export const serviceModules: ServiceModule[] = [
     num: "03",
     title: "Digital Marketing Systems",
     summary:
-      "Practical digital marketing support to help businesses improve visibility, track performance and generate better enquiries from their website.",
+      "Practical digital marketing support focused on SEO foundations, analytics, tracking, campaigns and landing pages that help businesses measure performance and generate better enquiries.",
     bestFor: [
       "Businesses relying on local search",
       "Websites with weak enquiry flow",
       "Campaign landing pages",
       "Businesses that need clearer tracking",
-      "Brands that need better content structure",
+      "Brands launching paid or organic campaigns",
     ],
     deliverables: [
       "SEO foundations",
-      "Local SEO structure",
       "Landing pages",
       "Analytics and conversion tracking",
       "Campaign pages",
       "Google Business support",
       "Content structure and messaging",
+      "Enquiry flow improvements",
     ],
     outcome:
       "A clearer marketing setup that helps the website do more than sit online, so it becomes easier to find, easier to measure and easier to improve.",
+  },
+  {
+    id: "ai-search-visibility",
+    slug: "ai-search-visibility",
+    num: "05",
+    title: "AI Search Visibility",
+    summary:
+      "Search is changing. More people are using AI tools to compare businesses, ask for recommendations and understand who to trust. We help make your website, content and digital footprint easier for those systems to read, understand and reference.",
+    bestFor: [
+      "Local businesses that want to be found in AI-assisted search",
+      "Service businesses competing in crowded markets",
+      "Brands with unclear or thin website content",
+      "Businesses already investing in SEO",
+      "Companies that want stronger visibility beyond Google",
+    ],
+    deliverables: [
+      "Service and location content structure",
+      "Clear business entity signals",
+      "Schema and technical SEO foundations",
+      "FAQ and answer-led content",
+      "Case studies, proof and trust signals",
+      "Local search and Google Business alignment",
+      "Content designed for both people and AI search systems",
+    ],
+    outcome:
+      "A clearer digital footprint that gives search engines and AI tools better information about who you are, what you do, where you operate and why your business should be trusted.",
   },
   {
     id: "infrastructure-support",

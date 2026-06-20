@@ -24,8 +24,15 @@ export const capabilities: Capability[] = [
     code: "A3",
     name: "Digital Marketing Systems",
     description:
-      "Practical digital marketing support to help businesses improve visibility, track performance and generate better enquiries from their website.",
+      "SEO foundations, analytics, tracking and campaign support to help businesses measure performance, improve landing pages and generate better enquiries.",
     stack: ["SEO", "Analytics", "Campaigns"],
+  },
+  {
+    code: "A5",
+    name: "AI Search Visibility",
+    description:
+      "Structured content, technical signals and authority-building work designed to help businesses appear clearly across AI-assisted search, including ChatGPT, Gemini, Claude and Perplexity.",
+    stack: ["GEO", "LLM Visibility", "Structured Content"],
   },
   {
     code: "A4",
