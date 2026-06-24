@@ -25,6 +25,17 @@ export const testimonials: Testimonial[] = [
     displayOrder: 1,
   },
   {
+    id: "give2gets-project-planning-natalie",
+    quote:
+      "Working with AJ at TDev Digital to develop my website was a seamless and enjoyable experience from start to finish. AJ took the time to fully understand my vision and business objectives, while paying close attention to the finer details that were important to me. What impressed me most was his ability to take my ideas and enhance them with his own creativity, expertise and practical suggestions, resulting in a website that exceeded my expectations. His collaborative approach, professionalism and commitment to delivering a high-quality end product made the entire process straightforward and stress-free. I would highly recommend AJ and TDev Digital to anyone looking for a talented and reliable web development partner.",
+    name: "Natalie",
+    business: "Give2Gets Project Planning",
+    projectType: "Consultancy website",
+    relatedProjectSlug: "give2gets-project-planning",
+    approvedForUse: true,
+    displayOrder: 2,
+  },
+  {
     id: "stay-at-filey-victoria",
     quote:
       "TDev Digital took the time to understand what we needed and delivered a website that represents the cottages clearly and professionally. The process was straightforward, good value for money and focused on what would actually help guests find the right information and enquire with confidence.",
@@ -51,5 +62,6 @@ export const testimonials: Testimonial[] = [
 export function getApprovedTestimonials(): Testimonial[] {
   return testimonials
     .filter((testimonial) => testimonial.approvedForUse)
-    .sort((a, b) => a.displayOrder - b.displayOrder);
+    .sort((a, b) => a.displayOrder - b.displayOrder)
+    .slice(0, 3);
 }

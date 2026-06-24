@@ -114,6 +114,12 @@ export const projects: Project[] = [
       "The site was built to keep the editing experience manageable while still giving the pages a more bespoke feel. Custom sections were used where needed, with a focus on layout, spacing, typography and content clarity.\n\nThe structure was designed around the way consultancy buyers assess trust: experience, sectors, services, approach and a simple route to enquiry.",
     outcome:
       "Give2Gets Project Planning now has a more credible and structured online presence. The website gives the consultancy a clearer way to present its expertise, support referrals and direct potential clients towards a professional enquiry.",
+    testimonial: {
+      quote:
+        "Working with AJ at TDev Digital to develop my website was a seamless and enjoyable experience from start to finish. AJ took the time to fully understand my vision and business objectives, while paying close attention to the finer details that were important to me. What impressed me most was his ability to take my ideas and enhance them with his own creativity, expertise and practical suggestions, resulting in a website that exceeded my expectations. His collaborative approach, professionalism and commitment to delivering a high-quality end product made the entire process straightforward and stress-free. I would highly recommend AJ and TDev Digital to anyone looking for a talented and reliable web development partner.",
+      name: "Natalie",
+      business: "Give2Gets Project Planning",
+    },
     keyPoints: [
       "Professional consultancy website",
       "Clear service and sector structure",
